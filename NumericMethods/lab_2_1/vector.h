@@ -33,7 +33,10 @@ int vecscal ( double scal,
               double *vector, int rasmer,
               double *vector_res, int *rasmer_res );
 
-///Вывод вектора на печать.
+/// \brief Ввод вектора.
+void input ( double *vector, int *razmer );
+
+/// \brief Вывод вектора.
 void vivod ( double *vector, int rasmer, char *msg );
 
 ///Сумма двух векторов.
@@ -48,7 +51,6 @@ double scalmnog ( double *vector_a, int rasmer_a,
 ///Определение модуля вектора.
 double modul_vec ( double *vector_a, int rasmer_a );
 
-///Ввод вектора
-void input ( double *vector, int *razmer );
+
 
 #endif

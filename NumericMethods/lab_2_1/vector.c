@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include "vector.h"
 
 int vecscal ( double scal,
               double *vector, int rasmer,

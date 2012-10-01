@@ -1,3 +1,6 @@
+/// \authors София Казимиренко
+/// \authors Николай Матвеев
+
 struct sVector
 {
   double *d; ///< Указатель на первый элемент распределенноого в памяти пространства для хранения элементов вектора.
@@ -14,7 +17,7 @@ struct sVector
  * @param SZ максимальный размер вектора, который соответствует количеству памяти,
  * распределенной под него.
  */
-struct sVector init_V ( double* pV, int N , int SZ );
+struct sVector init_V ( double *v, int N, int SZ);
 
 void out_V ( struct sVector V, char *msg );
 
@@ -27,8 +30,18 @@ void out_V ( struct sVector V, char *msg );
 */
 void in_V ( struct sVector *V);
 
-double scalMult_V ( const struct sVector Va, const struct sVector Vb );
+/**
+ * \brief Скалярное произведение векторов.
+ *
+ * @param Va количество элементов вектора;
+ * @param Vb количество элементов вектора;
+*/
+double dotProduct_V_V ( const struct sVector Va, const struct sVector Vb );
 
-double norma_V ( const struct sVector V );
+int dotProduct_S_V ( double S, const struct sVector Va, struct sVector *V_rez);
+
+int addProduct_V_V ( const struct sVector Va, const struct sVector Vb, struct sVector *V_rez);
+
+double norm_V ( const struct sVector V );
 
 
