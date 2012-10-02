@@ -40,6 +40,9 @@ int main()
   double vector_res[10]; //конечный вектор(результат)
   struct sVector V_rez = init_V ( vector_res, 10, 10 );
 
+  int sszz=sizeof(double[10][10]);
+  printf("\nsizeof(double[10][10])=%d",sszz);
+
   /*
     double matr_a[10][10];
     int matr_strok_a, matr_stolb_a; //кол-во строк и столбцов матрицы а

@@ -51,6 +51,4 @@ double scalmnog ( double *vector_a, int rasmer_a,
 ///Определение модуля вектора.
 double modul_vec ( double *vector_a, int rasmer_a );
 
-
-
 #endif
