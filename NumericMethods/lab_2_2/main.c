@@ -6,6 +6,7 @@ double df ( double x );
 int metod_hord ( double a, double b, double eps, double *x_rez );
 int metod_newthona ( double a, double b, double eps, double *x_rez );
 int metod_rafsona ( double a, double b, double eps, double *x_rez );
+int metod_iteration ( double a, double b, double eps, double *x_rez );
 
 int main()
 {
@@ -45,6 +46,9 @@ int main()
     {
       printf ( "\nThere are no roots" );
     }
+
+  metod_iteration ( a, b, 0.001, &x_rez );
+  printf ( "\nx_rez(by metod_iteration)=%f", x_rez );
 
   return 0;
 }
@@ -127,4 +131,41 @@ double df ( double x )
 {
   return 0.5 / ( cos ( 0.5 * x + 0.1 ) * cos ( 0.5 * x + 0.1 ) ) - 2.0 * x;
 }
+
+
+int metod_iteration ( double a, double b, double eps, double *x_rez )
+{
+  double x, xn;
+  xn = a;
+
+  do
+    {
+      x = xn;
+      xn = f ( x ) + x;
+    }
+  while ( fabs ( ( x - xn ) / x ) > eps );
+
+  *x_rez = xn;
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
