@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 
 double f ( double x );
 double df ( double x );
@@ -11,6 +12,8 @@ int metod_iteration ( double a, double b, double eps, double *x_rez );
 int main()
 {
   double a, b, x_rez;
+  clock_t start, end;
+  start = clock();
 
 //   printf ( "\na=" );
 //   scanf ( "%lf", &a );
@@ -19,10 +22,19 @@ int main()
 //   printf ( "\na=%f\tb=%f", a, b );
   a = 0.1;
   b = 1.1;
+  long int iii;
+  long int delay=1000000;
 
   if ( metod_hord ( a, b, 0.001, &x_rez ) == 0 )
     {
+      start = clock();
+
+      for ( iii = 0; iii < delay; ++iii )
+        metod_hord ( a, b, 0.001, &x_rez );
+
+      end = clock();
       printf ( "\nx_rez(metod_hord)=%f", x_rez );
+      printf ( "\nTime %f\n", 1.0*(end - start)/CLOCKS_PER_SEC );
     }
   else
     {
@@ -31,7 +43,14 @@ int main()
 
   if ( metod_newthona ( a, b, 0.001, &x_rez ) == 0 )
     {
+      start = clock();
+
+      for ( iii = 0; iii < delay; ++iii )
+        metod_newthona ( a, b, 0.001, &x_rez );
+
+      end = clock();
       printf ( "\nx_rez(by metod_newthona)=%f", x_rez );
+      printf ( "\nTime %f\n", 1.0*(end - start)/CLOCKS_PER_SEC );
     }
   else
     {
@@ -40,16 +59,27 @@ int main()
 
   if ( metod_rafsona ( a, b, 0.001, &x_rez ) == 0 )
     {
+      start = clock();
+
+      for ( iii = 0; iii < delay; ++iii )
+        metod_rafsona ( a, b, 0.001, &x_rez );
+
+      end = clock();
       printf ( "\nx_rez(by metod_rafsona)=%f", x_rez );
+      printf ( "\nTime %f\n", 1.0*(end - start)/CLOCKS_PER_SEC );
     }
   else
     {
       printf ( "\nThere are no roots" );
     }
 
-  metod_iteration ( a, b, 0.001, &x_rez );
+  start = clock();
+  for ( iii = 0; iii < delay; ++iii )
+    metod_iteration ( a, b, 0.001, &x_rez );
+  end = clock();
+  
   printf ( "\nx_rez(by metod_iteration)=%f", x_rez );
-
+  printf ( "\nTime %f\n", 1.0*(end - start)/CLOCKS_PER_SEC );
   return 0;
 }
 
