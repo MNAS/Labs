@@ -1,11 +1,5 @@
-CMakeCache.txt
-CMakeFiles
-Makefile
-cmake_install.cmake
-install_manifest.txt
 .directory
 *~
 build/
 .kdev4/
-*~
-.*kate-swp
+*.kdev4
