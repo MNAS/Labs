@@ -16,7 +16,7 @@ Romb::Romb(const Point &f, double Angle, double D1, double D2)
     centre=f;
     /*double a=Angle%360;
     if(a<0)
-    	angle=a+360;///<усли остаток от деления на 360 отрицательный,то +360 градусов
+    	angle=a+360;///<СѓСЃР»Рё РѕСЃС‚Р°С‚РѕРє РѕС‚ РґРµР»РµРЅРёСЏ РЅР° 360 РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Р№,С‚Рѕ +360 РіСЂР°РґСѓСЃРѕРІ
     else
     	angle=a;*/
     angle=Angle;
