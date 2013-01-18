@@ -1,10 +1,27 @@
 #include <stdio.h> 
 #include "Point.h" 
+#include "Romb.h"
 #include "Arc.h"
 #include "Moon.h"
 
 int main() 
 {
+    Romb Rb;
+     Rb.input();
+     Rb.output();
+     printf("%f\n",Rb.perimetr());
+     printf("%f\n",Rb.area());
+     
+  Moon Mn;
+    Mn.input();
+    Mn.output();
+    printf("%f\n",Mn.perimetr());
+    printf("%f\n",Mn.area());
+    return 0;
+}
+
+
+
  /*   Point A;
     Point B(5,6);
     Point C;
@@ -31,10 +48,3 @@ int main()
     C.output();
     printf("Distance=%f\n",B.distance(C));
 */  
-    Moon Aa;
-    Aa.input();
-    Aa.output();
-    printf("%f\n",Aa.perimetr());
-    printf("%f\n",Aa.area());
-    return 0;
-}
