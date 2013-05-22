@@ -1,5 +1,5 @@
-project(qwwq)
+project(sort)
 
-add_executable(qwwq main.c sort.c)
+add_executable(sort main.c sort.c)
 
-install(TARGETS qwwq RUNTIME DESTINATION bin)
+install(TARGETS sort RUNTIME DESTINATION bin)
