@@ -121,7 +121,7 @@ void mergeSort(int size, int *array)
         for(j=0; j<numDel; ++j)
         {
             int startArr1=2*j*numElem;		//Смещение от первой части массива b1
-            int startArr2=2*j*numElem+numElem;	//Смещение от второй части массива b1
+            int startArr2=(2*j+1)*numElem;	//Смещение от второй части массива b1
             int startArr3=2*j*numElem;		//Смещение от начала результирующего массива b2
             printf("i=%d ,j=%d startArr1=%d startArr2=%d\n",i,j,startArr1,startArr2);
 	    
