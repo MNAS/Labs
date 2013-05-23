@@ -86,24 +86,41 @@ int Graf::findInRebra(Versh *a)
     return numInReber;
 }
 
-void Graf::addVersh(Versh *a)
+void Graf::copyOutRebra(Graf* G)
 {
-    vershins[numVersh++]=a;
+    numOutReber=G->numOutReber;
+    for(int i=0; i<numOutReber; ++i)
+        outRebra[i]=G->outRebra[i];
 }
 
-void Graf::addRebro(Rebro *a)
+void Graf::addVersh(Versh *V)
 {
-    rebrs[numReber++]=a;
+    if(isExist(V))
+        return;
+    vershins[numVersh++]=V;
 }
 
-//Проверяет есть ли вершина в графе
-bool Graf::isExist(Versh *a)
+void Graf::addRebro(Rebro* R)
+{
+    if(isExist(R))
+        return;
+    rebrs[numReber++]=R;
+}
+
+
+bool Graf::isExist(Versh* V)
 {
     for(int i=0; i<numVersh; ++i)
-    {
-        if(vershins[i]==a)
+        if(vershins[i]==V)
             return true;
-    }
+    return false;
+}
+
+bool Graf::isExist(Rebro *R)
+{
+    for(int i=0; i<numReber; ++i)
+        if(rebrs[i]==R)
+            return true;
     return false;
 }
 
@@ -115,11 +132,12 @@ int Graf::findMinWay(char fromName, char toName)
     Versh *to=findVershByName(toName);
     if(from==0 || to==0)
         return 2000000000;//если нет какой-либо из вершин,то найти расстояние нельзя
-    a->createKaima(tree, this);
+        
     tree->addVersh(from);
     tree->output();
+    a->createKaima(tree, this);
     a->output();
-    while(tree->isExist(to))
+    while(!tree->isExist(to))
     {
         Versh *b=a->findMinWayToVersh(from);//вершина с минимальным расстоянием до начальной
         tree->addVersh(b);//добавили вершину к дереву
@@ -130,6 +148,13 @@ int Graf::findMinWay(char fromName, char toName)
             tree->addRebro(a->inRebra[0]);//добавляем в дерево единственное входящее в вершину с мин.расстоянием ребро
             a->createKaima(tree, this);
         }
+        tree->output();
+	a->output();
     }
     delete a;
+    delete tree;
 }
+
+
+
+

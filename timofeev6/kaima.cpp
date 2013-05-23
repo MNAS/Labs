@@ -1,13 +1,16 @@
 #include "graf.h"
 #include <iostream>
 
-Kaima::Kaima():Graf()
-{}
+Kaima::Kaima():Graf(), numEndVersh(0)
+{
+  endVershins=new Versh*[100];
+}
 
 Kaima::~Kaima()
 {
     numReber=0;
     numVersh=0;
+    delete endVershins;
 }
 
 Versh * Kaima::findMinWayToVersh(Versh *aStart)
@@ -30,7 +33,7 @@ Versh * Kaima::findMinWayToVersh(Versh *aStart)
 
 int Kaima::findWay(Versh *from,Versh *a)
 {
-    int lenWay=2000000000;
+    int lenWay=0;
     Versh *temp=a;//промежуточная переменная
     while(temp!=from)
     {
@@ -58,19 +61,32 @@ int Kaima::ListOfEndVersh()
     return numEndVersh;
 }
 
-void Kaima::createKaima(Kaima *tree, Graf *g)
+void Kaima::createKaima(Kaima *tree, Graf *G)
 {
-    /*	for(int i=0;i<tree->numVersh;++i)
-    	{
-    		if()
-    	}
-    	a->addVersh(aStart);//добавляем в нее начальную вершину
-    	findOutRebra(aStart);//находим все ребра,которые выходят из начальной вершины
-    	for(int i=0;i<numOutReber;++i)//проходимся по массиву с исходящими ребрами
-    	{
-    		a->addRebro(outRebra[i]);//добавляем все исходящие ребра в кайму
-    		a->addVersh(outRebra[i]->getEnd());//добавляем конечные вершины этих ребер в кайму
-    	}
-    	return a;
-    */
+  copy(*tree);
+  for(int i=0;i<numVersh;++i)
+  {
+    G->findOutRebra(vershins[i]);
+    copyOutRebra(G);
+    addOutRebersIfNotExist();
+  }
+  for(int i=0;i<numReber;++i)
+    addVersh(rebrs[i]->getEnd());
+}
+
+void Kaima::copy(Kaima& K)
+{
+  clean();
+  numReber=K.numReber;
+  numVersh=K.numVersh;
+  for(int i=0;i<numReber;++i) 
+    rebrs[i]=K.rebrs[i];
+  for(int i=0;i<numVersh;++i) 
+    vershins[i]=K.vershins[i];
+}
+
+void Kaima::addOutRebersIfNotExist()
+{
+  for(int i=0; i<numOutReber; ++i)
+    addRebro(outRebra[i]);
 }
