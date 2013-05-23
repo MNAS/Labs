@@ -89,8 +89,8 @@ public:
     Kaima();
     ~Kaima();
     void createKaima(Kaima* tree, Graf* G);//создает кайму на основе дерева tree для графа g.
-    int findWay(Versh *from,Versh *a);//ищет расстояние от любого края каймы до начальной вершины(a - любая вершина)
-    Versh *findMinWayToVersh(Versh *aStart);//нахождение вершины, путь до которой из начальной точки каймы будет минимальным
+    int findWay(Versh *From,Versh *A);//Возвращает расстояние края каймы A до вершины From (корень каймы).
+    Versh * findVershWhisMinWayFrom(Versh *aStart);//нахождение вершины, путь до которой из начальной точки каймы будет минимальным
     void clean(){numReber=0; numVersh=0;}///Удаляет из каймы вершины и ребра, делая ее пустой.
     void copy(Kaima& K);///Выполняет копирование ребер и вершин из каймы K.
 private:

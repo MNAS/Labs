@@ -13,7 +13,7 @@ Kaima::~Kaima()
     delete endVershins;
 }
 
-Versh * Kaima::findMinWayToVersh(Versh *aStart)
+Versh * Kaima::findVershWhisMinWayFrom(Versh *aStart)
 {
     Versh *temp=0;//результирующая вершина,до которой минимальный путь
     int minWay=2000000000;
@@ -31,18 +31,20 @@ Versh * Kaima::findMinWayToVersh(Versh *aStart)
     return temp;
 }
 
-int Kaima::findWay(Versh *from,Versh *a)
+int Kaima::findWay(Versh* From, Versh* A)
 {
     int lenWay=0;
-    Versh *temp=a;//промежуточная переменная
-    while(temp!=from)
+    Versh *temp=A;//промежуточная переменная
+    while(temp!=From)
     {
-        for(int i=0; i<numReber; ++i)
-        {
-            if(rebrs[i]->getEnd()==temp)
-                lenWay+=rebrs[i]->getWeight();
-            temp=rebrs[i]->getStart();
-        }
+      findInRebra(temp);
+      if(this->numInReber==1)
+      {
+	temp=inRebra[0]->getStart();
+	lenWay+=inRebra[0]->getWeight();
+      }
+      else
+	return 2000000000;
     }
     return lenWay;
 }

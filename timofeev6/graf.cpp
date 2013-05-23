@@ -137,17 +137,33 @@ int Graf::findMinWay(char fromName, char toName)
     tree->output();
     a->createKaima(tree, this);
     a->output();
+    
+    {
+    Versh *vA =a->findVershByName('A');
+    Versh *vB =a->findVershByName('B');
+    Versh *vE =a->findVershByName('E');
+    vA->output(); vB->output(); vE->output();
+    int i=0;
+    i=a->findWay(vA,vA);
+    i=a->findWay(vA,vB);
+    i=a->findWay(vA,vE);
+    ++i;
+    }
+    
     while(!tree->isExist(to))
     {
-        Versh *b=a->findMinWayToVersh(from);//вершина с минимальным расстоянием до начальной
+        Versh *b=a->findVershWhisMinWayFrom(from);//вершина с минимальным расстоянием до начальной
         tree->addVersh(b);//добавили вершину к дереву
-        if(a->findInRebra(b)!=1)//находим ребра,которые входят в вершину с мин.расстоянием
+	a->createKaima(tree, this);
+/*
+         if(a->findInRebra(b)!=1)//находим ребра,которые входят в вершину с мин.расстоянием
             return 2000000000;
         else
         {
             tree->addRebro(a->inRebra[0]);//добавляем в дерево единственное входящее в вершину с мин.расстоянием ребро
             a->createKaima(tree, this);
         }
+*/
         tree->output();
 	a->output();
     }
