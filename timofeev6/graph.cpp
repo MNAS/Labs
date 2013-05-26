@@ -1,19 +1,19 @@
-#include "graf.h"
+#include "graph.h"
 #include <iostream>
 
-Graf::Graf()
+Graph::Graph()
 {
-    rebrs=new Rebro*[100];
-    vershins=new Versh*[100];
+    rebrs=new Rib*[100];
+    vershins=new Vertex*[100];
     numReber=0;
     numVersh=0;
-    outRebra=new Rebro*[100];
-    inRebra=new Rebro*[100];
+    outRebra=new Rib*[100];
+    inRebra=new Rib*[100];
     numOutReber=0;
     numInReber=0;
 }
 
-Graf::~Graf()
+Graph::~Graph()
 {
     for(int i=0; i<numReber; ++i)
         delete rebrs[i];
@@ -25,11 +25,11 @@ Graf::~Graf()
     delete vershins;
 }
 
-void Graf::addRebro(Versh *aStart, Versh *aEnd, int aWeight)
+void Graph::addRebro(Vertex *aStart, Vertex *aEnd, int aWeight)
 {
     if(aStart!=0&&aEnd!=0)
     {
-        Rebro *a=new Rebro;//создается ребро
+        Rib *a=new Rib;//создается ребро
         rebrs[numReber++]=a;//в массив добавляется ребро,кол-во ребер увеличивается на 1
         a->setStart(aStart);//связываем ребро с вершинами
         a->setEnd(aEnd);
@@ -37,16 +37,16 @@ void Graf::addRebro(Versh *aStart, Versh *aEnd, int aWeight)
     }
 }
 
-void Graf::addVersh(char aName)
+void Graph::addVersh(char aName)
 {
-    Versh *a=new Versh;
+    Vertex *a=new Vertex;
     vershins[numVersh++]=a;
     a->setName(aName);
 }
 
-void Graf::output()
+void Graph::output()
 {
-    std::cout<<"Graf:"<<std::endl;
+    std::cout<<"Graph:"<<std::endl;
     for(int i=0; i<numReber; ++i)
         rebrs[i]->output();
 
@@ -54,7 +54,7 @@ void Graf::output()
         vershins[i]->output();
 }
 
-Versh* Graf::findVershByName(char aName)
+Vertex* Graph::findVershByName(char aName)
 {
     for(int i=0; i<numVersh; ++i)
     {
@@ -64,7 +64,7 @@ Versh* Graf::findVershByName(char aName)
     return 0;
 }
 
-int Graf::findOutRebra(Versh *a)
+int Graph::findOutRebra(Vertex *a)
 {
     numOutReber=0;
     for(int i=0; i<numReber; ++i)
@@ -75,7 +75,7 @@ int Graf::findOutRebra(Versh *a)
     return numOutReber;
 }
 
-int Graf::findInRebra(Versh *a)
+int Graph::findInRebra(Vertex *a)
 {
     numInReber=0;
     for(int i=0; i<numReber; ++i)
@@ -86,21 +86,21 @@ int Graf::findInRebra(Versh *a)
     return numInReber;
 }
 
-void Graf::copyOutRebra(Graf* G)
+void Graph::copyOutRebra(Graph* G)
 {
     numOutReber=G->numOutReber;
     for(int i=0; i<numOutReber; ++i)
         outRebra[i]=G->outRebra[i];
 }
 
-void Graf::addVersh(Versh *V)
+void Graph::addVersh(Vertex *V)
 {
     if(isExist(V))
         return;
     vershins[numVersh++]=V;
 }
 
-void Graf::addRebro(Rebro* R)
+void Graph::addRebro(Rib* R)
 {
     if(isExist(R))
         return;
@@ -108,7 +108,7 @@ void Graf::addRebro(Rebro* R)
 }
 
 
-bool Graf::isExist(Versh* V)
+bool Graph::isExist(Vertex* V)
 {
     for(int i=0; i<numVersh; ++i)
         if(vershins[i]==V)
@@ -116,7 +116,7 @@ bool Graf::isExist(Versh* V)
     return false;
 }
 
-bool Graf::isExist(Rebro *R)
+bool Graph::isExist(Rib *R)
 {
     for(int i=0; i<numReber; ++i)
         if(rebrs[i]==R)
@@ -124,12 +124,12 @@ bool Graf::isExist(Rebro *R)
     return false;
 }
 
-int Graf::findMinWay(char fromName, char toName)
+int Graph::findMinWay(char fromName, char toName)
 {
     Kaima *a=new Kaima;//создаем койму
     Kaima *tree=new Kaima;//дерево из присоедененных вершин
-    Versh *from=findVershByName(fromName);//нахождение указателя вершины по имени
-    Versh *to=findVershByName(toName);
+    Vertex *from=findVershByName(fromName);//нахождение указателя вершины по имени
+    Vertex *to=findVershByName(toName);
     if(from==0 || to==0)
         return 2000000000;//если нет какой-либо из вершин,то найти расстояние нельзя
         
@@ -139,9 +139,9 @@ int Graf::findMinWay(char fromName, char toName)
     a->output();
     
     {
-    Versh *vA =a->findVershByName('A');
-    Versh *vB =a->findVershByName('B');
-    Versh *vE =a->findVershByName('E');
+    Vertex *vA =a->findVershByName('A');
+    Vertex *vB =a->findVershByName('B');
+    Vertex *vE =a->findVershByName('E');
     vA->output(); vB->output(); vE->output();
     int i=0;
     i=a->findWay(vA,vA);
@@ -152,7 +152,7 @@ int Graf::findMinWay(char fromName, char toName)
     
     while(!tree->isExist(to))
     {
-        Versh *b=a->findVershWhisMinWayFrom(from);//вершина с минимальным расстоянием до начальной
+        Vertex *b=a->findVershWhisMinWayFrom(from);//вершина с минимальным расстоянием до начальной
         tree->addVersh(b);//добавили вершину к дереву
 	a->createKaima(tree, this);
 /*

@@ -1,10 +1,10 @@
-#include "graf.h"
+#include "graph.h"
 #include <iostream>
 
 int main()
 {
-    Rebro *b=new Rebro;
-    Graf A;
+    Rib *b=new Rib;
+    Graph A;
     A.addVersh('A');
     A.addVersh('B');
     A.addVersh('C');

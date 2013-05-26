@@ -1,21 +1,21 @@
-#include "graf.h"
+#include "graph.h"
 #include <iostream>
 
-Rebro::Rebro()
+Rib::Rib()
 {
     weight=0;
     start=0;
     end=0;
 }
 
-Rebro::~Rebro()
+Rib::~Rib()
 {
 
 }
 
-void Rebro::output()
+void Rib::output()
 {
-    std::cout<<"Rebro:"<<weight<<" "
+    std::cout<<"Rib:"<<weight<<" "
              <<start->getName()<<" "<<start->getIndex()<<" "
              <<end->getName()<<" "<<end->getIndex()<<std::endl;
 }

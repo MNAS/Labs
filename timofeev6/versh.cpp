@@ -1,18 +1,18 @@
-#include "graf.h"
+#include "graph.h"
 #include <iostream>
 
-int Versh::counter=0;
+int Vertex::counter=0;
 
-Versh::Versh() {
+Vertex::Vertex() {
     index=++counter;
     name=0;
 }
 
-Versh::~Versh()
+Vertex::~Vertex()
 {
 }
 
-void Versh::output()
+void Vertex::output()
 {
     std::cout<<"Versh:"<<name<<" "<<index<<std::endl;
 }

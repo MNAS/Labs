@@ -1,9 +1,9 @@
-#include "graf.h"
+#include "graph.h"
 #include <iostream>
 
-Kaima::Kaima():Graf(), numEndVersh(0)
+Kaima::Kaima():Graph(), numEndVersh(0)
 {
-  endVershins=new Versh*[100];
+  endVershins=new Vertex*[100];
 }
 
 Kaima::~Kaima()
@@ -13,9 +13,9 @@ Kaima::~Kaima()
     delete endVershins;
 }
 
-Versh * Kaima::findVershWhisMinWayFrom(Versh *aStart)
+Vertex * Kaima::findVershWhisMinWayFrom(Vertex *aStart)
 {
-    Versh *temp=0;//результирующая вершина,до которой минимальный путь
+    Vertex *temp=0;//результирующая вершина,до которой минимальный путь
     int minWay=2000000000;
     ListOfEndVersh();
     for(int i=0; i<numEndVersh; ++i)
@@ -31,10 +31,10 @@ Versh * Kaima::findVershWhisMinWayFrom(Versh *aStart)
     return temp;
 }
 
-int Kaima::findWay(Versh* From, Versh* A)
+int Kaima::findWay(Vertex* From, Vertex* A)
 {
     int lenWay=0;
-    Versh *temp=A;//промежуточная переменная
+    Vertex *temp=A;//промежуточная переменная
     while(temp!=From)
     {
       findInRebra(temp);
@@ -63,7 +63,7 @@ int Kaima::ListOfEndVersh()
     return numEndVersh;
 }
 
-void Kaima::createKaima(Kaima *tree, Graf *G)
+void Kaima::createKaima(Kaima *tree, Graph *G)
 {
   copy(*tree);
   for(int i=0;i<numVersh;++i)
