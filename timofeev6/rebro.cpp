@@ -15,7 +15,10 @@ Rib::~Rib()
 
 void Rib::output()
 {
-    std::cout<<"Rib:"<<weight<<" "
-             <<start->getName()<<" "<<start->getIndex()<<" "
-             <<end->getName()<<" "<<end->getIndex()<<std::endl;
+    std::cout<<"Rib:";
+    start->output();
+    std::cout<<"->";
+    end->output();
+    std::cout<<"; Weight="<<weight;
+    std::cout.flush();
 }

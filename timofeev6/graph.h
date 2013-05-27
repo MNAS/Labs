@@ -15,7 +15,7 @@ public:
     };
 private:
     int index;//уникальный идентификатор вершины
-    char name;//имя решины
+    char name;//имя вершины
     static int counter;//количество созданных вершин(счетчик вершин)
 };
 
@@ -23,25 +23,13 @@ class Rib {
 public:
     Rib();
     ~Rib();
-    int getWeight()const {
-        return weight;
-    };//функция не меняет содержимого полей
-    Vertex *getStart()const {
-        return start;
-    };
-    Vertex *getEnd()const {
-        return end;
-    };
-    void setWeight(int value) {
-        weight=value;
-    };
-    void setStart(Vertex *aStart) {
-        start=aStart;
-    };
-    void setEnd(Vertex *aEnd) {
-        end=aEnd;
-    };
-    void output();//ывод на экран ребра
+    int getWeight()const {return weight;}//функция не меняет содержимого полей
+    Vertex *getStart()const {return start;}
+    Vertex *getEnd()const {return end;}
+    void setWeight(int value) {weight=value;}
+    void setStart(Vertex *aStart) {start=aStart;}
+    void setEnd(Vertex *aEnd) {end=aEnd;}
+    void output();//Вывод на экран ребра
 private:
     int weight;//вес ребра
     Vertex *start;//начало ребра
@@ -58,22 +46,23 @@ public:
     void addVersh(char aName);//добавление вершины
     void addVersh(Vertex *a);//добавление вершины по указателю
     Vertex *findVershByName(char aName);//поиск вершины по имени
-    void output();//вывод графа
+    virtual void output();//вывод графа
     int findMinWay(char fromName, char toName);//функция нахождения минимального пути
-    
-public:    
+
+public:
     int findOutRebra(Vertex *a);//находит ребра,выходящие из вершины
     int findInRebra(Vertex *a);//находит ребра, входящие в вершину
-    void copyOutRebra(Graph* G); ///Выполняет копирование ребер найденных как исходящие для  вершины.
+    
 
 protected:
-  
+
     int numReber;//количество ребер
     int numVersh;//количество вершин
     Rib **rebrs;//указатель на массив указателей на ребра
     Vertex **vershins;//указатель на массив указателей на вершины
 
 protected:
+    friend Kaima;
     Rib **outRebra;//массив ребер,которые найдены в функции findOutRebra
     Rib **inRebra;//массив ребер,которые найдены в функции findInRebra
 
@@ -84,19 +73,30 @@ protected:
     bool isExist(Rib *R);///<Проверяет присутствует-ли ребро R в графе. Возвращает: true|false - ребро найдено|не найдено среди ребер графа.
 };
 
+/**Класс Kaima предназначен для выполнения поиска кратчайшего пути на графе.
+ * Класс состоит из
+ * 1) наследуемых от Graph массивов вершин и ребер (граф), которые прочно
+ * присоединены к дереву поиска;
+ * 2) каймы (массива вершин, ребер, и длин путей вопрос о присоендинении
+ * которых к дереву поиска рассматривается в ходе решения задачи на каждом
+ * шаге поиска.)
+ */
 class Kaima:public Graph {
 public:
     Kaima();
     ~Kaima();
-    void createKaima(Kaima* tree, Graph* G);//создает кайму на основе дерева tree для графа g.
+    void initKaima(Vertex* V, Graph* G);//Cоздает кайму(инициализация начала поиска). Добавление к дереву единственной вершины, присутствующей в графе G. Присоединение каймы.
+    void output();
     int findWay(Vertex *From,Vertex *A);//Возвращает расстояние края каймы A до вершины From (корень каймы).
-    Vertex * findVershWhisMinWayFrom(Vertex *aStart);//нахождение вершины, путь до которой из начальной точки каймы будет минимальным
-    void clean(){numReber=0; numVersh=0;}///Удаляет из каймы вершины и ребра, делая ее пустой.
-    void copy(Kaima& K);///Выполняет копирование ребер и вершин из каймы K.
+    int findVershWhisMinWayFrom();//Нахождение индекса вершины, ребра и длины маршрута, путь до которой из начальной точки дерева будет минимальным.
+    
+    void add(int index, Graph * G);///Присоединение ребра и вершины каймы к дереву.    
 private:
-    Vertex **endVershins;//Versh **vershinsассив вершин из которых не выходят ребра
-    int numEndVersh;
-    int ListOfEndVersh();//ищет список конечных вершин(из которых не выходит ребер)
-    void addOutRebersIfNotExist();///Добавляет к канве ребра, если они не присутствуют в кайме.
+    int *lenPathTree;//Массив длин путей до вершин дерева.
+
+    Vertex **kajmaVertexes;//Массив вершин каймы.
+    Rib **kajmaRibs;//Массив ребер каймы.
+    int *kajmaLenPath;//Массив длин путей до вершин каймы.
+    int num ;//Количество вершин, ребер и элементов длин путей в кайме.
 };
 

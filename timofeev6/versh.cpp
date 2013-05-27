@@ -14,5 +14,6 @@ Vertex::~Vertex()
 
 void Vertex::output()
 {
-    std::cout<<"Versh:"<<name<<" "<<index<<std::endl;
+    std::cout<<"Versh:"<<name<<"("<<index<<")";
+    std::cout.flush();
 }

@@ -1,94 +1,125 @@
 #include "graph.h"
 #include <iostream>
 
-Kaima::Kaima():Graph(), numEndVersh(0)
+Kaima::Kaima():Graph(), num(0)
 {
-  endVershins=new Vertex*[100];
+    kajmaVertexes=new Vertex*[100];
+    kajmaRibs=new Rib*[100];
+    kajmaLenPath=new int[100];
+
+    lenPathTree=new int[100];
 }
 
 Kaima::~Kaima()
 {
-    numReber=0;
-    numVersh=0;
-    delete endVershins;
+    num=0;
+    delete kajmaVertexes;
+    delete kajmaRibs;
 }
 
-Vertex * Kaima::findVershWhisMinWayFrom(Vertex *aStart)
+int Kaima::findVershWhisMinWayFrom()
 {
-    Vertex *temp=0;//результирующая вершина,до которой минимальный путь
+    int res=0;//результирующая вершина,до которой минимальный путь
     int minWay=2000000000;
-    ListOfEndVersh();
-    for(int i=0; i<numEndVersh; ++i)
+    for(int i=0; i<num; ++i)
     {
-        int a=findWay(aStart,endVershins[i]);//временная переменная,содержит расстояние от стартовой вершины до конечных
-        if(a<minWay)
+        Vertex *s=kajmaRibs[i]->getStart();
+        int s_index=-1;
+        for(int j=0; j<numVersh; ++j)
         {
-            minWay=a;
-            temp=endVershins[i];//temp запоминает вершину, до которой минимальный путь
+            if(vershins[j]==s)
+            {
+                s_index=j;
+                break;
+            }
         }
-
+        int len=lenPathTree[s_index]+kajmaRibs[i]->getWeight();
+        minWay=(len<minWay)?(res=i,len):minWay;
     }
-    return temp;
+    return res;
 }
 
 int Kaima::findWay(Vertex* From, Vertex* A)
 {
     int lenWay=0;
     Vertex *temp=A;//промежуточная переменная
+    std::cout<<"Результирующий путь из конца в начало:"<<std::endl;
     while(temp!=From)
     {
-      findInRebra(temp);
-      if(this->numInReber==1)
-      {
-	temp=inRebra[0]->getStart();
-	lenWay+=inRebra[0]->getWeight();
-      }
-      else
-	return 2000000000;
+	temp->output();
+	std::cout<<"<-";
+        findInRebra(temp);
+        if(this->numInReber==1)
+        {
+            temp=inRebra[0]->getStart();
+            lenWay+=inRebra[0]->getWeight();
+        }
+        else
+            return 2000000000;
     }
+    From->output();
+    std::cout<<"="<<lenWay<<std::endl;
     return lenWay;
 }
 
-//ищет список конечных вершин(из которых не выходит ребер)
-int Kaima::ListOfEndVersh()
+void Kaima::initKaima(Vertex *V, Graph* G)
 {
-    numEndVersh=0;
-    for(int i=0; i<numVersh; ++i)
+    num=0;
+    numVersh=0;
+    numReber=0;
+    lenPathTree[numVersh]=0;
+    if(G && G->isExist(V))//Вершина присутствует в графе.
     {
-        if(findOutRebra(vershins[i])==0)
+
+        addVersh(V);
+
+        G->findOutRebra(V);
+        for(int i=0; i<G->numOutReber; ++i)
         {
-            endVershins[numEndVersh++]=vershins[i];
+            kajmaRibs[num]=G->outRebra[i];
+            kajmaVertexes[num]=G->outRebra[i]->getEnd();
+            kajmaLenPath[num]=G->outRebra[i]->getWeight();
+            ++num;
         }
     }
-    return numEndVersh;
+    else
+        std::cout<<"V not Exist in G"<<std::endl;
 }
 
-void Kaima::createKaima(Kaima *tree, Graph *G)
+void Kaima::add (int index, Graph* G)
 {
-  copy(*tree);
-  for(int i=0;i<numVersh;++i)
-  {
-    G->findOutRebra(vershins[i]);
-    copyOutRebra(G);
-    addOutRebersIfNotExist();
-  }
-  for(int i=0;i<numReber;++i)
-    addVersh(rebrs[i]->getEnd());
+    addVersh(kajmaVertexes[index]);
+    addRebro(kajmaRibs[index]);
+    lenPathTree[numVersh]=kajmaLenPath[index];
+
+    G->findOutRebra(kajmaVertexes[index]);
+
+    for(int i=index; index+1<num; ++index)
+    {
+        kajmaVertexes[i]=kajmaVertexes[i+1];
+        kajmaRibs[i]=kajmaRibs[i+1];
+        kajmaLenPath[i]=kajmaLenPath[i+1];
+    }
+    --num;
+    for(int i=0; i<G->numOutReber; ++i)
+    {
+        kajmaRibs[num]=G->outRebra[i];
+        kajmaVertexes[num]=G->outRebra[i]->getEnd();
+        kajmaLenPath[num]=G->outRebra[i]->getWeight();
+        ++num;
+    }
+
 }
 
-void Kaima::copy(Kaima& K)
-{
-  clean();
-  numReber=K.numReber;
-  numVersh=K.numVersh;
-  for(int i=0;i<numReber;++i) 
-    rebrs[i]=K.rebrs[i];
-  for(int i=0;i<numVersh;++i) 
-    vershins[i]=K.vershins[i];
-}
-
-void Kaima::addOutRebersIfNotExist()
-{
-  for(int i=0; i<numOutReber; ++i)
-    addRebro(outRebra[i]);
+void Kaima::output()
+{   std::cout<<"Kaima:";
+    Graph::output();
+    for(int i=0; i<num; ++i)
+    {
+        kajmaRibs[i]->output();
+        std::cout<<"\t";
+        kajmaVertexes[i]->output();
+        std::cout<<"\t";
+        std::cout<<" "<<kajmaLenPath[i]<<std::endl;
+    }
 }

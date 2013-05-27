@@ -48,19 +48,23 @@ void Graph::output()
 {
     std::cout<<"Graph:"<<std::endl;
     for(int i=0; i<numReber; ++i)
-        rebrs[i]->output();
+    {   rebrs[i]->output();
+        std::cout<<"\n";
+    }
 
     for(int i=0; i<numVersh; ++i)
-        vershins[i]->output();
+    {   vershins[i]->output();
+        std::cout<<"\n";
+    }
+
+    std::cout.flush();
 }
 
 Vertex* Graph::findVershByName(char aName)
 {
     for(int i=0; i<numVersh; ++i)
-    {
         if(vershins[i]->getName()==aName)
             return vershins[i];
-    }
     return 0;
 }
 
@@ -68,10 +72,8 @@ int Graph::findOutRebra(Vertex *a)
 {
     numOutReber=0;
     for(int i=0; i<numReber; ++i)
-    {
         if(rebrs[i]->getStart()==a)
             outRebra[numOutReber++]=rebrs[i];//если вершина совпадает с начальной вершиной какого-либо ребра из массива ребер,то добавляем найденное ребро в массив найденных ребер и увеличиваем количество найд. ребер
-    }
     return numOutReber;
 }
 
@@ -79,31 +81,20 @@ int Graph::findInRebra(Vertex *a)
 {
     numInReber=0;
     for(int i=0; i<numReber; ++i)
-    {
         if(rebrs[i]->getEnd()==a)
             inRebra[numInReber++]=rebrs[i];//если вершина совпадает с начальной вершиной какого-либо ребра из массива ребер,то добавляем найденное ребро в массив найденных ребер и увеличиваем количество найд. ребер
-    }
     return numInReber;
-}
-
-void Graph::copyOutRebra(Graph* G)
-{
-    numOutReber=G->numOutReber;
-    for(int i=0; i<numOutReber; ++i)
-        outRebra[i]=G->outRebra[i];
 }
 
 void Graph::addVersh(Vertex *V)
 {
-    if(isExist(V))
-        return;
+    if(isExist(V)) return;
     vershins[numVersh++]=V;
 }
 
 void Graph::addRebro(Rib* R)
 {
-    if(isExist(R))
-        return;
+    if(isExist(R)) return;
     rebrs[numReber++]=R;
 }
 
@@ -127,50 +118,21 @@ bool Graph::isExist(Rib *R)
 int Graph::findMinWay(char fromName, char toName)
 {
     Kaima *a=new Kaima;//создаем койму
-    Kaima *tree=new Kaima;//дерево из присоедененных вершин
     Vertex *from=findVershByName(fromName);//нахождение указателя вершины по имени
     Vertex *to=findVershByName(toName);
     if(from==0 || to==0)
         return 2000000000;//если нет какой-либо из вершин,то найти расстояние нельзя
-        
-    tree->addVersh(from);
-    tree->output();
-    a->createKaima(tree, this);
+
+    a->initKaima(from, this);
     a->output();
-    
+
+    while(!a->isExist(to))
     {
-    Vertex *vA =a->findVershByName('A');
-    Vertex *vB =a->findVershByName('B');
-    Vertex *vE =a->findVershByName('E');
-    vA->output(); vB->output(); vE->output();
-    int i=0;
-    i=a->findWay(vA,vA);
-    i=a->findWay(vA,vB);
-    i=a->findWay(vA,vE);
-    ++i;
+        int index=-1;
+        index=a->findVershWhisMinWayFrom();
+        a->add(index,this);
+        a->output();
     }
-    
-    while(!tree->isExist(to))
-    {
-        Vertex *b=a->findVershWhisMinWayFrom(from);//вершина с минимальным расстоянием до начальной
-        tree->addVersh(b);//добавили вершину к дереву
-	a->createKaima(tree, this);
-/*
-         if(a->findInRebra(b)!=1)//находим ребра,которые входят в вершину с мин.расстоянием
-            return 2000000000;
-        else
-        {
-            tree->addRebro(a->inRebra[0]);//добавляем в дерево единственное входящее в вершину с мин.расстоянием ребро
-            a->createKaima(tree, this);
-        }
-*/
-        tree->output();
-	a->output();
-    }
+    a->findWay(from,to);
     delete a;
-    delete tree;
 }
-
-
-
-
