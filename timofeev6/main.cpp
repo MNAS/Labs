@@ -1,28 +1,26 @@
 #include "graph.h"
 #include <iostream>
+#include <stdlib.h>
 
-int main()
+int main(int argc, char*argv[])
 {
-    Rib *b=new Rib;
-    Graph A;
-    A.addVersh('A');
-    A.addVersh('B');
-    A.addVersh('C');
-    A.addVersh('D');
-    A.addVersh('E');
-    A.addVersh('F');
-
-    A.addRebro(A.findVershByName('A'),A.findVershByName('B'), 5);
-    A.addRebro(A.findVershByName('A'),A.findVershByName('E'), 20);
-    A.addRebro(A.findVershByName('B'),A.findVershByName('F'), 30);
-    A.addRebro(A.findVershByName('B'),A.findVershByName('C'), 10);
-    A.addRebro(A.findVershByName('C'),A.findVershByName('F'), 10);
-    A.addRebro(A.findVershByName('C'),A.findVershByName('D'), 3);
-    A.addRebro(A.findVershByName('D'),A.findVershByName('F'), 8);
-    A.addRebro(A.findVershByName('E'),A.findVershByName('D'), 10);
-    A.addRebro(A.findVershByName('F'),A.findVershByName('E'), 50);
-    A.addRebro(A.findVershByName('A'),A.findVershByName('Z'), 100);
-    A.output();
-    A.findMinWay('A', 'F');
+    int i=1;
+    Graph *A =new Graph;
+    if(argc<3)
+        std::cout<<"Usage: graph-path from to [from_1 to_1 weight_1]"<<std::endl;
+	std::cout<<"./graph-path A F  A B 5  A E 30  B C 10  C D 15  E D 20  C F 70  D F 60  B F 40"<<std::endl;
+    while(i<3)
+        i++;
+    while(i+2<argc)
+    {
+        if(!A->findVershByName(argv[i][0]))
+            A->addVersh(argv[i][0]);
+        if(!A->findVershByName(argv[i+1][0]))
+            A->addVersh(argv[i+1][0]);
+        A->addRebro(A->findVershByName(argv[i][0]),A->findVershByName(argv[i+1][0]), atoi(argv[i+2]));
+        i+=3;
+    }
+    A->output();
+    A->findMinWay(argv[1][0], argv[2][0]);
     return 0;
 }

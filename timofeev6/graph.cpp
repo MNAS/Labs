@@ -115,6 +115,22 @@ bool Graph::isExist(Rib *R)
     return false;
 }
 
+int  Graph::index(Vertex *V)
+{
+    for(int i=0; i<numVersh; ++i)
+        if(vershins[i]==V)
+            return i;
+    return -1;
+}
+
+int  Graph::index(Rib *R)
+{
+  for(int i=0; i<numReber; ++i)
+        if(rebrs[i]==R)
+            return i;
+    return -1;
+}
+
 int Graph::findMinWay(char fromName, char toName)
 {
     Kaima *a=new Kaima;//создаем койму

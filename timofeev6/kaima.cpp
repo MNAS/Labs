@@ -46,8 +46,8 @@ int Kaima::findWay(Vertex* From, Vertex* A)
     std::cout<<"Результирующий путь из конца в начало:"<<std::endl;
     while(temp!=From)
     {
-	temp->output();
-	std::cout<<"<-";
+        temp->output();
+        std::cout<<"<-";
         findInRebra(temp);
         if(this->numInReber==1)
         {
@@ -88,13 +88,14 @@ void Kaima::initKaima(Vertex *V, Graph* G)
 
 void Kaima::add (int index, Graph* G)
 {
+    lenPathTree[numVersh]=kajmaLenPath[index];
     addVersh(kajmaVertexes[index]);
     addRebro(kajmaRibs[index]);
-    lenPathTree[numVersh]=kajmaLenPath[index];
+
 
     G->findOutRebra(kajmaVertexes[index]);
 
-    for(int i=index; index+1<num; ++index)
+    for(int i=index; i+1<num; ++i)
     {
         kajmaVertexes[i]=kajmaVertexes[i+1];
         kajmaRibs[i]=kajmaRibs[i+1];
@@ -112,14 +113,21 @@ void Kaima::add (int index, Graph* G)
 }
 
 void Kaima::output()
-{   std::cout<<"Kaima:";
-    Graph::output();
+{   std::cout<<"Kaima:"<<"\n";
+    for(int i=0; i<numReber; ++i)
+    {   rebrs[i]->output();
+        std::cout<<"\n";
+    }
+
+    for(int i=0; i<numVersh; ++i)
+    {   vershins[i]->output();
+        std::cout<<"\t"<<lenPathTree[i]<<"\n";
+    }
+
     for(int i=0; i<num; ++i)
     {
         kajmaRibs[i]->output();
-        std::cout<<"\t";
-        kajmaVertexes[i]->output();
-        std::cout<<"\t";
-        std::cout<<" "<<kajmaLenPath[i]<<std::endl;
+        std::cout<<"\t"<<kajmaLenPath[i]+lenPathTree[index(kajmaRibs[i]->getStart())]<<"\n";
     }
+    std::cout.flush();
 }
