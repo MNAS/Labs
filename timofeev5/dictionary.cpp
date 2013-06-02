@@ -3,56 +3,102 @@
 #include <string.h>
 using namespace std;
 
-int HashDictionary::code(char c)
+HashDictionary::HashDictionary( int length, int p, int q):LENGTH(length),P(p),Q(q)
 {
-	char alf[]="abcdefghijklmnopqrstuvwxyz";
-	return strchr(alf,c)-alf+1;//выдает номер входящего символа в латинском алфавите
+    dict=new string*[LENGTH];
+    memset(dict,0,sizeof(dict));
 }
 
-int HashDictionary::hash(const string &str)
+int HashDictionary::code(char c)
 {
-	int sum=0;
-	for(int i=0;i<str.length();++i)
-	{
-		sum+=code(str[i])+i;
-	}
-	return (P*sum+Q)%LENGTH;
+    char alf[]="abcdefghijklmnopqrstuvwxyz";
+    return strchr(alf,c)-alf+1;//РІС‹РґР°РµС‚ РЅРѕРјРµСЂ РІС…РѕРґСЏС‰РµРіРѕ СЃРёРјРІРѕР»Р° РІ Р»Р°С‚РёРЅСЃРєРѕРј Р°Р»С„Р°РІРёС‚Рµ
+}
+
+int HashDictionary::hash(const string &str)const
+{
+    int sum=0;
+    for(int i=0; i<str.length(); ++i)
+    {
+        sum+=code(str[i])+i;
+    }
+    return (P*sum+Q)%LENGTH;
 }
 
 int HashDictionary::findPos(const string &word)const
 {
-	int i=hash(word);//текущий индекс слова в словаре
-	for(int counter=0;counter<LENGTH;++counter)
-	{
-		if(dict[i]==NULL || *dict[i]==word)
-			return i;//слово или позиция для его вставки найдена
-		else if(++i==LENGTH)
-			i=0;//переход к следующему индексу
-	}
-	return -1;//перебраны все позиции в словаре
+    int i=hash(word);//С‚РµРєСѓС‰РёР№ РёРЅРґРµРєСЃ СЃР»РѕРІР° РІ СЃР»РѕРІР°СЂРµ
+    for(int counter=0; counter<LENGTH; ++counter)
+    {
+        if(dict[i]==NULL || *dict[i]==word)
+            return i;//СЃР»РѕРІРѕ РёР»Рё РїРѕР·РёС†РёСЏ РґР»СЏ РµРіРѕ РІСЃС‚Р°РІРєРё РЅР°Р№РґРµРЅР°
+        else if(++i==LENGTH)
+            i=0;//РїРµСЂРµС…РѕРґ Рє СЃР»РµРґСѓСЋС‰РµРјСѓ РёРЅРґРµРєСЃСѓ
+    }
+    return -1;//РїРµСЂРµР±СЂР°РЅС‹ РІСЃРµ РїРѕР·РёС†РёРё РІ СЃР»РѕРІР°СЂРµ
 }
 
 void HashDictionary::add(const string &word)
 {
-	int i=findPos(word);//позиция слова в словаре
-	if(i==-1)
-		return;//в случае переполнения словаря
-	if(dict[i]==NULL)
-		dict[i]= new string();
-	*dict[i]=word;//добавление слова и его перезапись	
+    int i=findPos(word);//РїРѕР·РёС†РёСЏ СЃР»РѕРІР° РІ СЃР»РѕРІР°СЂРµ
+    if(i==-1)
+        return;//РІ СЃР»СѓС‡Р°Рµ РїРµСЂРµРїРѕР»РЅРµРЅРёСЏ СЃР»РѕРІР°СЂСЏ
+    if(dict[i]==NULL)
+    {
+        dict[i]= new string();
+        *dict[i]=word;//РґРѕР±Р°РІР»РµРЅРёРµ СЃР»РѕРІР°
+    }
 }
 
 bool HashDictionary::hasWord(const string &word) const
 {
-	int i=findPos(word);
-	return i!=-1 && dict[i]!=NULL;
+    int i=findPos(word);
+    for(int counter=0; counter<LENGTH; ++counter)
+    {
+        if(*dict[i]==word)
+        {
+            return true;
+        }
+        else if(++i==LENGTH)
+            i=0;//РїРµСЂРµС…РѕРґ Рє СЃР»РµРґСѓСЋС‰РµРјСѓ РёРЅРґРµРєСЃСѓ
+    }
+    return false;
 }
 
 void HashDictionary::output()
 {
-	for(int i=0;i<LENGTH;++i)
-	{
-	  if(dict[i])
-		cout<<i<<" "<<*dict[i]<<endl;
-	}
+    for(int i=0; i<LENGTH; ++i)
+    {
+        if(dict[i])
+            cout<<i<<" "<<*dict[i]<<endl;
+    }
+}
+
+void HashDictionary::del(const string &word)
+{
+    int i=findPos(word);//РїРѕР·РёС†РёСЏ СЃР»РѕРІР° РІ СЃР»РѕРІР°СЂРµ
+    for(int counter=0; counter<LENGTH; ++counter)
+    {
+        if(*dict[i]==word)
+        {
+            delete dict[i];
+            dict[i]=0;
+            return;
+        }
+        else if(++i==LENGTH)
+            i=0;//РїРµСЂРµС…РѕРґ Рє СЃР»РµРґСѓСЋС‰РµРјСѓ РёРЅРґРµРєСЃСѓ
+    }
+}
+
+int HashDictionary::findKey(const string &word)const
+{
+    int i=findPos(word);//РїРѕР·РёС†РёСЏ СЃР»РѕРІР° РІ СЃР»РѕРІР°СЂРµ
+    for(int counter=0; counter<LENGTH; ++counter)
+    {
+        if(*dict[i]==word)
+            return i;//РІРѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РёСЃРєРѕРјРѕРіРѕ СЃР»РѕРІР°
+        else if(++i==LENGTH)
+            i=0;//РїРµСЂРµС…РѕРґ Рє СЃР»РµРґСѓСЋС‰РµРјСѓ РёРЅРґРµРєСЃСѓ
+    }
+    return -1;//РµСЃР»Рё РЅРµ РЅР°С€Р»Рё СЃР»РѕРІР° РІ СЃР»РѕРІР°СЂРµ
 }

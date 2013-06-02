@@ -4,23 +4,28 @@
 using namespace std;
 
 
-//Класс, представляющий словарь в виде хэш-таблицы
+//РљР»Р°СЃСЃ, РїСЂРµРґСЃС‚Р°РІР»СЏСЋС‰РёР№ СЃР»РѕРІР°СЂСЊ РІ РІРёРґРµ С…СЌС€-С‚Р°Р±Р»РёС†С‹
 
 
 class HashDictionary{
 private:
-	static const int P=7549;
-	static const int Q=4639;
-	static const int LENGTH=8193;
+	//static const int P=7549;
+	//static const int Q=4639;
+	//static const int LENGTH=8193;
 	
-	string *dict[10000];// хранилище на 1000 слов
+	const int P;
+	const int Q;
+	const int LENGTH;
+	string **dict;// С…СЂР°РЅРёР»РёС‰Рµ РЅР° 1000 СЃР»РѕРІ
 	
-	static int code(const char c);//функция определяет код буквы как ее порядковый номер в латинском алфавите
-	int findPos(const string &word) const;//внутренняя функция поиска позиции слова в словаре
+	static int code(const char c);//С„СѓРЅРєС†РёСЏ РѕРїСЂРµРґРµР»СЏРµС‚ РєРѕРґ Р±СѓРєРІС‹ РєР°Рє РµРµ РїРѕСЂСЏРґРєРѕРІС‹Р№ РЅРѕРјРµСЂ РІ Р»Р°С‚РёРЅСЃРєРѕРј Р°Р»С„Р°РІРёС‚Рµ
+	int findPos(const string &word) const;//РІРЅСѓС‚СЂРµРЅРЅСЏСЏ С„СѓРЅРєС†РёСЏ РїРѕРёСЃРєР° РїРѕР·РёС†РёРё СЃР»РѕРІР° РІ СЃР»РѕРІР°СЂРµ
 public:
-	HashDictionary(){memset(dict,0,sizeof(dict));};//конструктор записывает в словарь пустые ссылки
-	static int hash(const string &str);//функция расстановки, основанная на сложении кодов букв со смещением, соответствующим их позиции
-	void add(const string &word);//функция добавления слова в словарь
-	bool hasWord(const string &word) const;//функция проверки наличия слова в словаре
+	HashDictionary(int length, int p, int q);//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р·Р°РїРёСЃС‹РІР°РµС‚ РІ СЃР»РѕРІР°СЂСЊ РїСѓСЃС‚С‹Рµ СЃСЃС‹Р»РєРё
+	int hash(const string &str)const;//С„СѓРЅРєС†РёСЏ СЂР°СЃСЃС‚Р°РЅРѕРІРєРё, РѕСЃРЅРѕРІР°РЅРЅР°СЏ РЅР° СЃР»РѕР¶РµРЅРёРё РєРѕРґРѕРІ Р±СѓРєРІ СЃРѕ СЃРјРµС‰РµРЅРёРµРј, СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј РёС… РїРѕР·РёС†РёРё
+	void add(const string &word);//С„СѓРЅРєС†РёСЏ РґРѕР±Р°РІР»РµРЅРёСЏ СЃР»РѕРІР° РІ СЃР»РѕРІР°СЂСЊ
+	bool hasWord(const string &word) const;//С„СѓРЅРєС†РёСЏ РїСЂРѕРІРµСЂРєРё РЅР°Р»РёС‡РёСЏ СЃР»РѕРІР° РІ СЃР»РѕРІР°СЂРµ
 	void output();
+	int findKey(const string &word)const;
+	void del(const string &word);
 };
