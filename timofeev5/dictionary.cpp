@@ -11,8 +11,19 @@ HashDictionary::HashDictionary( int length, int p, int q):LENGTH(length),P(p),Q(
 
 int HashDictionary::code(char c)
 {
+    int rez=-1;
     char alf[]="abcdefghijklmnopqrstuvwxyz";
-    return strchr(alf,c)-alf+1;//выдает номер входящего символа в латинском алфавите
+    int i=0;
+    while(alf[i]!=0)
+    {
+        if(alf[i]==c)
+        {   rez=i;
+            break;
+        }
+        else
+            ++i;
+    }
+    return rez+1;//выдает номер входящего символа в латинском алфавите
 }
 
 int HashDictionary::hash(const string &str)const
@@ -52,13 +63,11 @@ void HashDictionary::add(const string &word)
 
 bool HashDictionary::hasWord(const string &word) const
 {
-    int i=findPos(word);
+    int i=hash(word);
     for(int counter=0; counter<LENGTH; ++counter)
     {
-        if(*dict[i]==word)
-        {
+        if(dict[i] && *dict[i]==word)
             return true;
-        }
         else if(++i==LENGTH)
             i=0;//переход к следующему индексу
     }
@@ -76,10 +85,10 @@ void HashDictionary::output()
 
 void HashDictionary::del(const string &word)
 {
-    int i=findPos(word);//позиция слова в словаре
+    int i=hash(word);
     for(int counter=0; counter<LENGTH; ++counter)
     {
-        if(*dict[i]==word)
+        if(dict[i] && *dict[i]==word)
         {
             delete dict[i];
             dict[i]=0;
@@ -92,10 +101,10 @@ void HashDictionary::del(const string &word)
 
 int HashDictionary::findKey(const string &word)const
 {
-    int i=findPos(word);//позиция слова в словаре
+    int i=hash(word);
     for(int counter=0; counter<LENGTH; ++counter)
     {
-        if(*dict[i]==word)
+        if(dict[i] && *dict[i]==word)
             return i;//возвращает индекс искомого слова
         else if(++i==LENGTH)
             i=0;//переход к следующему индексу
