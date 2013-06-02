@@ -4,55 +4,77 @@
 #include <math.h>
 #include "sort.h"
 
-int main ()
+int main (int argc, char* argv[])
 {
-    int N=25;
-    int arr[N];
-    char brr[N];
-    int i=0;
-    clock_t start,end;
-    double t;
-    int n=1000000;
-    int stime;
-    long ltime;
 
-    ltime=time(NULL);
-    stime=(unsigned)ltime/2;
-    srand(stime);
+    int i;
+    int N;//=100000;
+    int loops;//=10;
+    int arr[100000];
+    int arr_1[100000];
 
-    initArrInt(N,arr);
-    initArrChar(N,brr);
+    char brr[100000];
+    char brr_1[100000];
 
-    printf("Method of sorting(int)\n");
-    print_arrInt(N,arr);
-
-    start=clock();
-    for(i=0; i<n; ++i)
+    switch(argc)
     {
-        sortVstavkaInt(N,arr);
+    case 1:
+        printf("Usage: %s n_sorted_elements n_loops\n", argv[0]);
+        return 1;
+    case 2:
+        printf("Usage: %s n_sorted_elements n_loops\n", argv[0]);
+        return 1;
+    case 3:
+        N=atoi(argv[1]);
+        loops=atoi(argv[2]);
+        break;
+    default:
+        N=100000;
+        loops=10;
+        break;
     }
-    end=clock();
-    t=(end-start)*1.0/CLOCKS_PER_SEC;
-    print_arrInt(N,arr);
-    printf("Time for sum int=%f\n",t);
+    printf("N=%d; loops=%d\n", N,loops);
 
+    initArrInt(N,arr_1);
+    initArrChar(N,brr_1);
+    for(i=0; i<N; ++i)
+    {   arr[i]=arr_1[i];
+        brr[i]=brr_1[i];
+    }
+
+    printf("Method of sorting Sliyanie(int)calloc-free -> ");
+    detectTimeInt(callFreeInt,N,arr,loops);
     printf("\n");
-    printf("Method of sorting(char)\n");
-    print_arrChar(N,brr);
 
+    printf("Method of sorting Sliyanie(char)calloc-free -> ");
+    detectTimeChar(callFreeChar,N,brr,loops);
+    printf("\n");
 
-    start=clock();
-    for(i=0; i<n; ++i)
+    printf("Method of sorting Sliyanie(int) -> ");
+    detectTimeInt(mergeSortInt,N,arr,loops);
+    //  print_arrInt(N,arr);
+    printf("\n");
+
+    printf("Method of sorting Sliyanie(char) -> ");
+    detectTimeChar(mergeSortChar,N,brr,loops);
+    //  print_arrChar(N,brr);
+    printf("\n");
+
+    for(i=0; i<N; ++i)
     {
-        sortVstavkaChar(N,brr);
+        arr[i]=arr_1[i];
+        brr[i]=brr_1[i];
     }
-    end=clock();
-    t=(end-start)*1.0/CLOCKS_PER_SEC;
-    print_arrChar(N,brr);
-    printf("Time for sum int=%f\n",t);
 
-    print_arrInt(N,arr);
-    mergeSort(N,arr);
-    print_arrInt(N,arr);
+    printf("Method of sorting Vstavka(int) -> ");
+    detectTimeInt(sortVstavkaInt,N,arr,loops);
+//  print_arrInt(N,arr);
+    printf("\n");
+
+    printf("Method of sortingVstavka(char) -> ");
+    detectTimeChar(sortVstavkaChar,N,brr,loops);
+    //  print_arrChar(N,brr);
+    printf("\n");
+
     return 0;
 }
