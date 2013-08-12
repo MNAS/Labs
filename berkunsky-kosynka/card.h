@@ -1,0 +1,52 @@
+#ifndef CARD_H
+#define CARD_H
+
+#include <string>
+
+/**
+ * @author namatv
+ */
+
+/*
+ * A - туз, K - король, Q - дама, J - валет, T - десятка (не путать с тузом!
+ * Это буква от ten, и такое обозначение принято,
+ * чтобы сохранить по одному символу для обозначения всех карт).
+ * Далее 9-2 - остальные карты.
+ * Масти обозначаются по первой букве их английских названий:
+ * s - пики;
+ * d - бубны;
+ * c - трефы;
+ * h - червы.
+ * Например, Ts - десятка пик.
+*/
+
+class Card 
+{
+private:
+    int mast;			///< Масть. 1 - s пика; 2 c - крестья; 3 - d бубна; 4 - h черва.
+    int starshinstvo;		///< Старшинство карт 1 - туз; 2 - двойка; ... ; 12 - дама; 13 - король.
+    int sostoyanie;		///< Перевернута или нет
+public:    
+    static int numMast;		///< Количество мастей;
+    static int numStarsh;	///< Количество значений карт;
+
+    Card();
+    Card(int mast, int starshinstvo, int sostoyanie);    
+
+    bool isBlack();
+    bool isRed();
+    void setMast(int mast);
+    void setStarshinstvo(int starshinstvo);
+    void setSostoyanie(int sostoyanie);
+    int getMast();
+    int getStarshinstvo();
+    int getSostoyanie();
+
+    void output();
+    std::string name();
+    std::string toString() ;
+        
+};
+
+
+#endif // CARD_H
