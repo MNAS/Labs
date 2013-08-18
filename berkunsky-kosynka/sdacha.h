@@ -17,36 +17,26 @@
  *
  */
 
-#ifndef KOLODA_H
-#define KOLODA_H
-#include "card.h"
-#include <vector>
-#include <ostream>
+#ifndef SDACHA_H
+#define SDACHA_H
 
+#include "stopka.h"
 
-class Koloda
+class Sdacha
 {
-private:
-    static int N;
-    std::vector<Card*> cards;
-
 public:
+  Stopka *opened;	///<Открытая часть
+  Stopka *closed;	///<Закрытая часть
   
-    Koloda(const Koloda& other);
-    ~Koloda();
-    Koloda& operator=(const Koloda& other);
-    bool operator==(const Koloda& other);
-
-    Koloda();
-    int getN();
-    std::vector<Card*>* getKoloda();
-    void fillKoloda();
-    void peretosovat();
+public:
+    Sdacha();
+    Sdacha(const Sdacha& other);
+    ~Sdacha();
+    Sdacha& operator=(const Sdacha& other);
+    bool operator==(const Sdacha& other);
+    
     void output();
-    void cardsFaceUp();  ///<Переворачивает все карты колоды лицами вверх.
-    void cardsFaceDown(); ///<Переворачивает все карты колоды лицами вниз.
-private:
-    friend std::ostream& operator<<(std::ostream & os, const Koloda & k);
-};
 
-#endif // KOLODA_H
+
+};
+#endif // SDACHA_H

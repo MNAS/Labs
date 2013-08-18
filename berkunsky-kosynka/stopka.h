@@ -13,9 +13,7 @@ public:
     Stopka& operator=(const Stopka& other);
     bool operator==(const Stopka& other);
     
-    std::vector<Card*> stopka;
-
-//    List <Card> stopka=new ArrayList<>();
+    std::vector<Card*> *stopka;
 
     static int numStopok;	///< Количество стопок.
 

@@ -2,6 +2,7 @@
 #define CARD_H
 
 #include <string>
+#include <iostream>
 
 /**
  * @author namatv
@@ -25,7 +26,7 @@ class Card
 private:
     int mast;			///< Масть. 1 - s пика; 2 c - крестья; 3 - d бубна; 4 - h черва.
     int starshinstvo;		///< Старшинство карт 1 - туз; 2 - двойка; ... ; 12 - дама; 13 - король.
-    int sostoyanie;		///< Перевернута или нет
+    int sostoyanie;		///< 0 - рубашкой вверх; 1 - лицом вверх.
 public:    
     static int numMast;		///< Количество мастей;
     static int numStarsh;	///< Количество значений карт;
@@ -33,20 +34,25 @@ public:
     Card();
     Card(int mast, int starshinstvo, int sostoyanie);    
 
-    bool isBlack();
-    bool isRed();
+    bool isBlack();		///<Возвращает true если масть является черной;
+    bool isRed();		///<Возвращает true если масть является красной;
     void setMast(int mast);
     void setStarshinstvo(int starshinstvo);
     void setSostoyanie(int sostoyanie);
-    int getMast();
-    int getStarshinstvo();
-    int getSostoyanie();
+    int getMast() const;
+    int getStarshinstvo() const;
+    int getSostoyanie() const;
 
-    void output();
-    std::string name();
-    std::string toString() ;
+    void output() const;
+    std::string name() const;
+    std::string toString() const ;
+    
+private:
+    friend std::ostream& operator<<(std::ostream & os, const Card & C);
         
 };
 
+void faceToUp (Card *i);
+void faceToDown (Card *i);
 
 #endif // CARD_H

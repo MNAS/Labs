@@ -52,16 +52,16 @@ void Dom::output()
 {
     std::cout<<"\nDom";
 
-    if(A->stopka.empty()) std::cout<<"--";
+    if(A->stopka->empty()) std::cout<<"--";
     else A->output();
 
-    if(B->stopka.empty()) std::cout<<"--";
+    if(B->stopka->empty()) std::cout<<"--";
     else B->output();
 
-    if(C->stopka.empty())  std::cout<<"--";
+    if(C->stopka->empty())  std::cout<<"--";
     else C->output();
 
-    if(D->stopka.empty())  std::cout<<"--";
+    if(D->stopka->empty())  std::cout<<"--";
     else D->output();
 
     std::cout<<"\n";

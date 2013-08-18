@@ -23,7 +23,7 @@
 
 class Dom
 {
-private:
+public:
     Stopka *A;
     Stopka *B;
     Stopka *C;

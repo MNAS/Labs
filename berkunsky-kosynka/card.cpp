@@ -58,23 +58,21 @@ std::ostream & Card::operator<<(std::ostream & out)
 }
 */
 
-int Card::numMast=4;
-int Card::numStarsh=13;
+int Card::numMast = 4;
+int Card::numStarsh = 13;
 
-Card::Card():mast(2), starshinstvo(6),sostoyanie(1)
-{
-}
+Card::Card() : mast(2), starshinstvo(6), sostoyanie(1)
+{}
 
 Card::Card(int a_mast, int a_starshinstvo, int a_sostoyanie)
-{
-    mast = a_mast;
-    starshinstvo = a_starshinstvo;
-    sostoyanie = a_sostoyanie;
-}
+    : mast(a_mast)
+    , starshinstvo(a_starshinstvo)
+    , sostoyanie(a_sostoyanie)
+{}
 
 bool Card::isBlack()
 {
-    if(getMast()<2)
+    if (getMast() < 2)
         return true;
     return false;
 }
@@ -100,80 +98,100 @@ void Card::setSostoyanie(int a_sostoyanie)
 }
 
 
-int Card::getMast() {
+int Card::getMast() const
+{
     return mast;
 }
 
-int Card::getStarshinstvo() {
+int Card::getStarshinstvo() const
+{
     return starshinstvo;
 }
 
-int Card::getSostoyanie() {
+int Card::getSostoyanie() const
+{
     return sostoyanie;
 }
 
-void Card::output()
+void Card::output() const
 {
-    if(getSostoyanie()==0)
-    {
-        std::cout<<"[]";
-        return;
-    }
-    std::cout<<name();
-
+    if (getSostoyanie() == 0)
+        std::cout << "[]";
+    else
+        std::cout << name();
 }
 
-std::string Card::name()
+std::ostream &operator<< (std::ostream &os, const Card &C)
+{
+    if (C.getSostoyanie() == 0)
+        std::cout << "[]";
+    else
+        std::cout << C.name();
+    return os;
+}
+
+std::string Card::name() const
 {
     std::string m ; //Масть
     std::string s ; //Старшинство
 
-    switch(getStarshinstvo()) {
+    switch (getStarshinstvo()) {
     case 13:
-        s="K";
+        s = "K";
         break;
     case 12:
-        s="Q";
+        s = "Q";
         break;
     case 11:
-        s="J";
+        s = "J";
         break;
     case 10:
-        s="T";
+        s = "T";
         break;
     case 1:
-        s="A";
+        s = "A";
         break;
     default:
-        s=boost::lexical_cast<std::string>(getStarshinstvo());
+        s = boost::lexical_cast<std::string> (getStarshinstvo());
         break;
     }
-    switch(getMast()) {
+    switch (getMast()) {
     case 0:
-        m="s";
+        m = "s";
         break;
     case 1:
-        m="c";
+        m = "c";
         break;
     case 2:
-        m="d";
+        m = "d";
         break;
     case 3:
-        m="h";
+        m = "h";
         break;
     default:
-        std::cout<<"Fault";
+        std::cout << "Fault";
         std::cout.flush();
         break;
     }
-    return s+m;
+    return s + m;
 
 }
 
-std::string Card::toString()
-{   std::string rez="Card{";
-    rez+="mast=" + boost::lexical_cast<std::string>(mast) + ", starshinstvo=" +
-         boost::lexical_cast<std::string>(starshinstvo) + ", sostoyanie=" +
-         boost::lexical_cast<std::string>(sostoyanie) + '}';
+std::string Card::toString() const
+{
+    std::string rez = "Card{";
+    rez += "mast=" + boost::lexical_cast<std::string> (mast) + ", starshinstvo=" +
+           boost::lexical_cast<std::string> (starshinstvo) + ", sostoyanie=" +
+           boost::lexical_cast<std::string> (sostoyanie) + '}';
     return rez ;
+}
+
+
+void faceToUp(Card *i)
+{
+    i->setSostoyanie(1);
+}
+void faceToDown(Card *i)
+{
+    i->setSostoyanie(0);
 }

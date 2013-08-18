@@ -29,6 +29,7 @@ int main(int argc, char **argv)
 /* system example : DIR */
 #include <stdio.h>      /* printf */
 #include <stdlib.h>     /* system, NULL, EXIT_FAILURE */
+#include <boost/lexical_cast.hpp>
 
 int main ()
 {
@@ -39,8 +40,11 @@ int main ()
   printf ("Executing command DIR...\n");
   i=system ("dir");
   printf ("The value returned was: %d.\n",i);
+  std::string a=boost::lexical_cast<std::string>(12);
   return 0;
 }
+
+
 
 
 /* 
