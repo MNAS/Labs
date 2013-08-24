@@ -27,6 +27,7 @@ bool Sdacha::operator==(const Sdacha& other)
     return true;
 }
 
+/*
 void Sdacha::output()
 {
     std::cout<<"Sdacha.Closed ";
@@ -39,6 +40,7 @@ void Sdacha::output()
     std::cout<<"\n";
     std::cout.flush();
 }
+*/
 
 std::ostream & operator<<(std::ostream & os, Sdacha & sd)
 {

@@ -17,7 +17,7 @@ public:
     Dom& operator=(const Dom& other);
     bool operator==(const Dom& other);
     
-    void output();
+//    void output();
 private:
     friend std::ostream& operator<<(std::ostream & os, Dom & d);
 };

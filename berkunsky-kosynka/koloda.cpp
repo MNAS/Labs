@@ -73,6 +73,7 @@ void Koloda::peretosovat()
         }
 }
 
+/*
 void Koloda::output()
 {
         for ( int i=0; i<N; ++i ) {
@@ -80,6 +81,7 @@ void Koloda::output()
                 cards[i]->output();
         }
 }
+*/
 
 void Koloda::cardsFaceUp()
 {

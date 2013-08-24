@@ -28,6 +28,7 @@ bool Stopka::operator==(const Stopka& other)
 
 }
 
+/*
 void Stopka::output()
 {
     int size = cards->size();
@@ -38,12 +39,14 @@ void Stopka::output()
     std::cout<<"\n";
     std::cout.flush();
 }
+*/
 
 std::ostream & operator<<(std::ostream &os, Stopka &s)
 {
     int size = s.cards->size();
-    for(int i=0; i<size; ++i) {
-        s.cards->at(i)->output();
+    for(int i=0; i<size; ++i) 
+    {
+        os<<*s.cards->at(i);//->output();
         os<<" ";
     }
     os<<"\n";

@@ -15,8 +15,8 @@
  * Далее 9-2 - остальные карты.
  * Масти обозначаются по первой букве их английских названий:
  * s - пики;
- * d - бубны;
  * c - трефы;
+ * d - бубны;
  * h - червы.
  * Например, Ts - десятка пик.
 */
@@ -43,16 +43,15 @@ public:
     int getStarshinstvo() const;
     int getSostoyanie() const;
 
-    void output() const;
+//  void output() const;
     std::string name() const;
     std::string toString() const ;
     
 private:
     friend std::ostream& operator<<(std::ostream & os, const Card & C);
-        
 };
 
-void faceToUp (Card *i);
-void faceToDown (Card *i);
+void faceToUp (Card *i);	///<Выполняет пепеворот карты лицом вверх.
+void faceToDown (Card *i);	///<Выполняет переворот карты рубашкой вверх.
 
 #endif // CARD_H

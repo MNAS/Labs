@@ -29,6 +29,7 @@ bool Dom::operator==(const Dom& other)
 
 }
 
+/*
 void Dom::output()
 {
     std::cout<<"\nDom";
@@ -48,6 +49,7 @@ void Dom::output()
     std::cout<<"\n";
     std::cout.flush();
 }
+*/
 
 std::ostream & operator<<(std::ostream & os, Dom & d)
 {

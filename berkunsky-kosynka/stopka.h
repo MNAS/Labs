@@ -18,7 +18,7 @@ public:
 
     static int numStopok;	///< Количество стопок.
 
-    void output();
+//    void output();
     void openLastCard();
     Card * getLastCard();
     Card * getFirstCard();

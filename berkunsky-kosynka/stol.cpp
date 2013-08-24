@@ -52,9 +52,7 @@ bool Stol::operator==(const Stol& other)
     return true;
 }
 
-
-/*****************************************************************************/
-
+/*
 void Stol::output()
 {
     int sdClosedSize = sd->closed->cards->size();
@@ -71,6 +69,7 @@ void Stol::output()
     }
     dom->output();
 }
+*/
 
 std::ostream& operator<<(std::ostream &os, Stol &st)
 {
@@ -312,8 +311,10 @@ StructFind Stol::findByName(String name)
 void Stol::loop()
 {
     bool exit=true;
-    while(exit) {
-        output();
+    while(exit) 
+    {
+	std::cout<<*this;
+//        output();
         std::cout<<"Menu:"<<"\n"
 	<<"0 - Exit;\n"<<"1 - Next Card;"<<"\n"
 	<<"2 [Из_стопки] [В_стопку] [К-во_карт]"<<"\n"

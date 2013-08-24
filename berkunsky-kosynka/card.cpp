@@ -1,62 +1,7 @@
-/*
- * <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) 2013  <copyright holder> <email>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 #include "card.h"
 #include <iterator>
 #include <iostream>
 #include <boost/lexical_cast.hpp>
-/*
-Card::Card():range(1),suit(1),state(false)
-{
-
-}
-
-Card::Card(int Range, int Suit, bool State):range(Range),suit(Suit),state(State)
-{
-
-}
-
-std::ostream & Card::operator<<(std::ostream & out)
-{
-
-  switch(range)
-  {
-    case 1:
-//       rez[0]='A';rez[1]=0;
-//       out<<res;
-    case 11:
-//      out<<"J";
-      break;
-    case 12:
-  //    out<<"Q";
-      break;
-    case 13:
-    //  out<<"K";
-      break;
-    default:
-      //out<<range;
-      break;
-  }
-//  out<<
-  return out;
-}
-*/
 
 int Card::numMast = 4;
 int Card::numStarsh = 13;
@@ -113,6 +58,7 @@ int Card::getSostoyanie() const
     return sostoyanie;
 }
 
+/*
 void Card::output() const
 {
     if (getSostoyanie() == 0)
@@ -120,6 +66,7 @@ void Card::output() const
     else
         std::cout << name();
 }
+*/
 
 std::ostream &operator<< (std::ostream &os, const Card &C)
 {

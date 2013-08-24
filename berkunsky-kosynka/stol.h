@@ -43,7 +43,7 @@ public:
     Stol& operator=(const Stol& other);
     bool operator==(const Stol& other);
     
-    void output();
+//    void output();
     friend std::ostream& operator<<(std::ostream &os, Stol& st);
     void moveStopkaDom(int s);
     void moveDomStopka(int mast, int s );///<Перемещение масти mast из дома в стопку s.
