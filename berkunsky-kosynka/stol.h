@@ -25,6 +25,7 @@
 #include "sdacha.h"
 #include "stopka.h"
 #include <vector>
+#include <iostream>
 
 class Stol
 {
@@ -43,6 +44,7 @@ public:
     bool operator==(const Stol& other);
     
     void output();
+    friend std::ostream& operator<<(std::ostream &os, Stol& st);
     void moveStopkaDom(int s);
     void moveDomStopka(int mast, int s );///<Перемещение масти mast из дома в стопку s.
     void moveStopkaStopka(int sFrom, int sTo, int num );///<Перемещение из количества карт num из стопки sFrom в стопку sTo.

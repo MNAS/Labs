@@ -3,9 +3,9 @@
 
 int Stopka::numStopok=7;
 
-Stopka::Stopka():stopka(0)
+Stopka::Stopka():cards(0)
 {
-    stopka = new std::vector<Card*>;
+    cards = new std::vector<Card*>;
 }
 
 Stopka::Stopka(const Stopka& other)
@@ -30,38 +30,49 @@ bool Stopka::operator==(const Stopka& other)
 
 void Stopka::output()
 {
-    int size = stopka->size();
+    int size = cards->size();
     for(int i=0; i<size; ++i) {
-        stopka->at(i)->output();
+        cards->at(i)->output();
         std::cout<<" ";
     }
     std::cout<<"\n";
     std::cout.flush();
 }
 
+std::ostream & operator<<(std::ostream &os, Stopka &s)
+{
+    int size = s.cards->size();
+    for(int i=0; i<size; ++i) {
+        s.cards->at(i)->output();
+        os<<" ";
+    }
+    os<<"\n";
+    os.flush();
+}
+
 void Stopka::openLastCard()
 {
-    if(stopka->empty()) return;
-    stopka->at(stopka->size()-1)->setSostoyanie(1);
+    if(cards->empty()) return;
+    cards->at(cards->size()-1)->setSostoyanie(1);
 }
 
 Card* Stopka::getLastCard()
 {
-    if(stopka->empty()) return NULL;
-    return stopka->at(stopka->size()-1);
+    if(cards->empty()) return NULL;
+    return cards->at(cards->size()-1);
 }
 
 Card* Stopka::getFirstCard()
 {
-    if(stopka->empty()) return NULL;
-    return stopka->at(0);
+    if(cards->empty()) return NULL;
+    return cards->at(0);
 }
 
 void Stopka::closeCards()
 {
-    int size=stopka->size();
+    int size=cards->size();
     for(int i=0; i<size; ++i)
-        stopka->at(i)->setSostoyanie(0);
+        cards->at(i)->setSostoyanie(0);
 }
 
 void Stopka::StopkaStopka()

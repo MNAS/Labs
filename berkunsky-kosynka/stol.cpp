@@ -1,22 +1,3 @@
-/*
- * <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) 2013  <copyright holder> <email>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 #include "stol.h"
 #include <iostream>
 
@@ -38,15 +19,15 @@ Stol::Stol():k(0),dom(0),sd(0),selected(0),stopki(0)
         stopki->push_back(s);
         for(int j=0; j<=i; ++j)
         {
-            stopki->at(i)->stopka->push_back(k->getKoloda()->at(kolN++));
+            stopki->at(i)->cards->push_back(k->getKoloda()->at(kolN++));
         }
         stopki->at(i)->openLastCard();
     }
-    sd->opened->stopka->push_back(k->getKoloda()->at(kolN++));//Добавление в открытую часть сдачи карт.
+    sd->opened->cards->push_back(k->getKoloda()->at(kolN++));//Добавление в открытую часть сдачи карт.
     sd->opened->openLastCard();
     while(kolN<k->getN())
     {
-        sd->closed->stopka->push_back(k->getKoloda()->at(kolN++));//Добавление в склытую часть сдачи карт.
+        sd->closed->cards->push_back(k->getKoloda()->at(kolN++));//Добавление в склытую часть сдачи карт.
     }
 
 }
@@ -76,8 +57,8 @@ bool Stol::operator==(const Stol& other)
 
 void Stol::output()
 {
-    int sdClosedSize = sd->closed->stopka->size();
-    int sdOpenedSize = sd->opened->stopka->size();
+    int sdClosedSize = sd->closed->cards->size();
+    int sdOpenedSize = sd->opened->cards->size();
 
     std::cout<<"Стол"<<"\n";
     sd->output();
@@ -89,6 +70,25 @@ void Stol::output()
         stopki->at(i)->output();
     }
     dom->output();
+}
+
+std::ostream& operator<<(std::ostream &os, Stol &st)
+{
+    int sdClosedSize = st.sd->closed->cards->size();
+    int sdOpenedSize = st.sd->opened->cards->size();
+
+    os<<"Стол"<<"\n";
+    os<<(*st.sd);
+//    st.sd->output();
+
+    int size = st.stopki->size();
+    os<<"Стол.Стопки\n";
+    for (int i=0; i<size; i++) {
+        os<<"Стопка "<<i<<" ";
+        os<<(*st.stopki->at(i));//->output();
+    }
+    os<<(*st.dom);//->output();
+    return os;
 }
 
 void Stol::moveStopkaDom(int s)
@@ -117,8 +117,8 @@ void Stol::moveStopkaDom(int s)
         if( (a==NULL && cd->getStarshinstvo()==0) ||
                 (cd->getStarshinstvo()-a->getStarshinstvo()==1))
         {
-///            stopki->at(s)->stopka->erase(stopki->at(s)->stopka->begin()+cd);
-            stDom->stopka->push_back(cd);
+///            stopki->at(s)->cards->erase(stopki->at(s)->cards->begin()+cd);
+            stDom->cards->push_back(cd);
             stopki->at(s)->openLastCard();
         }
 
@@ -148,9 +148,9 @@ void Stol::moveDomStopka(int mast, int s )
         cd=a->getFirstCard();
         if(cd!=NULL)
 	{
- //           a->stopka->erase(cd);//////////////////////
+ //           a->cards->erase(cd);//////////////////////
 	}
-        stopki->at(s)->stopka->push_back(cd);
+        stopki->at(s)->cards->push_back(cd);
     }
 
 }
@@ -158,7 +158,7 @@ void Stol::moveDomStopka(int mast, int s )
 void Stol::moveStopkaStopka(int sFrom, int sTo, int num )
 {
 
-    Card *cd=stopki->at(sFrom)->stopka->at(stopki->at(sFrom)->stopka->size()-num);//snimaem num ot kraya kart
+    Card *cd=stopki->at(sFrom)->cards->at(stopki->at(sFrom)->cards->size()-num);//snimaem num ot kraya kart
     if(cd==NULL || cd->getSostoyanie()==0)
         return;
     Card *a=stopki->at(sTo)->getLastCard();//karta iz stopki 2
@@ -167,13 +167,13 @@ void Stol::moveStopkaStopka(int sFrom, int sTo, int num )
             || (a!=NULL && a->isBlack()!=cd->isBlack() &&
                 a->getStarshinstvo()-cd->getStarshinstvo()==1))
     {
-        int iFrom=stopki->at(sFrom)->stopka->size()-num;
-        int iTo=stopki->at(sFrom)->stopka->size();
+        int iFrom=stopki->at(sFrom)->cards->size()-num;
+        int iTo=stopki->at(sFrom)->cards->size();
 
 
-//        std::vector<Card*> subList = stopki->at(sFrom)->stopka->subList(iFrom,iTo);
-//        stopki->at(sTo)->stopka->addAll(subList);
-//        stopki->at(sFrom)->stopka->removeAll(subList);
+//        std::vector<Card*> subList = stopki->at(sFrom)->cards->subList(iFrom,iTo);
+//        stopki->at(sTo)->cards->addAll(subList);
+//        stopki->at(sFrom)->cards->removeAll(subList);
         stopki->at(sFrom)->openLastCard();
     }
 }
@@ -187,8 +187,8 @@ void Stol::moveRazdachaStopka(int sTo)
     if((a==NULL && cd->getStarshinstvo()==12)
             ||(a!=NULL && a->isBlack()!=cd->isBlack() && a->getStarshinstvo()-cd->getStarshinstvo()==1))
     {
-//        sd->opened->stopka->remove(cd);
-        stopki->at(sTo)->stopka->push_back(cd);
+//        sd->opened->cards->remove(cd);
+        stopki->at(sTo)->cards->push_back(cd);
 
     }
 
@@ -218,8 +218,8 @@ void Stol::moveRazdachaDom()
         Card *a=stDom->getLastCard();
         if( (a==NULL && cd->getStarshinstvo()==0) ||
                 (cd->getStarshinstvo()-a->getStarshinstvo()==1)) {
-//            sd->opened->stopka.remove(cd);
-            stDom->stopka->push_back(cd);
+//            sd->opened->cards.remove(cd);
+            stDom->cards->push_back(cd);
         }
     }
 }
@@ -229,14 +229,14 @@ void Stol::openNext()
     Card *cd=sd->closed->getFirstCard();
     if(cd == NULL)
     {
- //       sd->closed->stopka->addAll(sd->opened->stopka);
-        sd->opened->stopka->clear();
+ //       sd->closed->cards->addAll(sd->opened->cards);
+        sd->opened->cards->clear();
         sd->closed->closeCards();
     }
     else
     {
- //       sd->closed->stopka->remove(cd);
-        sd->opened->stopka->push_back(cd);
+ //       sd->closed->cards->remove(cd);
+        sd->opened->cards->push_back(cd);
         cd->setSostoyanie(1);
     }
 
@@ -266,42 +266,42 @@ StructFind Stol::findByName(String name)
         }
     }
     for(int i=0; i<stopki.size(); ++i) {
-        ind=stopki.get(i).stopka.indexOf(a);//nahodit index zadanoy karti po imeni v kolode
+        ind=stopki.get(i).cards.indexOf(a);//nahodit index zadanoy karti po imeni v kolode
         if(ind!=-1 && a.getSostoyanie()!=0)
         {
             f.indOfStopka=i;
             f.indOfCard=ind;
-            f.numCards=stopki.get(i).stopka.size()-f.indOfCard;
+            f.numCards=stopki.get(i).cards.size()-f.indOfCard;
             return f;
         }
     }
     if(sd.opened.getLastCard()!=null && sd.opened.getLastCard().name().equals(name)) {
         f.indOfStopka=11;
-        f.indOfCard=sd.opened.stopka.size()-1;
+        f.indOfCard=sd.opened.cards.size()-1;
         f.numCards=1;
         return f;
     }
     if(dom.A.getLastCard()!=null && dom.A.getLastCard().name().equals(name)) {
         f.indOfStopka=7;
-        f.indOfCard=dom.A.stopka.size()-1;
+        f.indOfCard=dom.A.cards.size()-1;
         f.numCards=1;
         return f;
     }
     if(dom.B.getLastCard()!=null && dom.B.getLastCard().name().equals(name)) {
         f.indOfStopka=8;
-        f.indOfCard=dom.B.stopka.size()-1;
+        f.indOfCard=dom.B.cards.size()-1;
         f.numCards=1;
         return f;
     }
     if(dom.C.getLastCard()!=null && dom.C.getLastCard().name().equals(name)) {
         f.indOfStopka=9;
-        f.indOfCard=dom.C.stopka.size()-1;
+        f.indOfCard=dom.C.cards.size()-1;
         f.numCards=1;
         return f;
     }
     if(dom.D.getLastCard()!=null && dom.D.getLastCard().name().equals(name)) {
         f.indOfStopka=10;
-        f.indOfCard=dom.D.stopka.size()-1;
+        f.indOfCard=dom.D.cards.size()-1;
         f.numCards=1;
         return f;
     }

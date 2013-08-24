@@ -1,6 +1,7 @@
 #ifndef STOPKA_H
 #define STOPKA_H
 
+#include <iostream>
 #include <vector>
 #include "card.h"
 
@@ -13,7 +14,7 @@ public:
     Stopka& operator=(const Stopka& other);
     bool operator==(const Stopka& other);
     
-    std::vector<Card*> *stopka;
+    std::vector<Card*> *cards;
 
     static int numStopok;	///< Количество стопок.
 
@@ -25,6 +26,7 @@ public:
 private:
     void StopkaStopka();
     void StopkaDom();
+    friend std::ostream & operator<<(std::ostream & os, Stopka & s);
 };
 
 
