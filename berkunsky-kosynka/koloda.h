@@ -23,7 +23,6 @@ public:
     std::vector<Card*>* getKoloda();
     void fillKoloda();
     void peretosovat();
-//    void output();
     void cardsFaceUp();		///<Переворачивает все карты колоды лицами вверх.
     void cardsFaceDown();	///<Переворачивает все карты колоды лицами вниз.
     

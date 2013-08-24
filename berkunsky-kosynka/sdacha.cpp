@@ -27,21 +27,6 @@ bool Sdacha::operator==(const Sdacha& other)
     return true;
 }
 
-/*
-void Sdacha::output()
-{
-    std::cout<<"Sdacha.Closed ";
-    closed->output();
-    std::cout<<"\n";
-    std::cout.flush();
-
-    std::cout<<"Sdacha.Opened ";
-    opened->output();
-    std::cout<<"\n";
-    std::cout.flush();
-}
-*/
-
 std::ostream & operator<<(std::ostream & os, Sdacha & sd)
 {
     os<<"Сдача.Закрытая ";

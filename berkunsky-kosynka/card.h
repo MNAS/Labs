@@ -43,7 +43,6 @@ public:
     int getStarshinstvo() const;
     int getSostoyanie() const;
 
-//  void output() const;
     std::string name() const;
     std::string toString() const ;
     
@@ -51,7 +50,8 @@ private:
     friend std::ostream& operator<<(std::ostream & os, const Card & C);
 };
 
-void faceToUp (Card *i);	///<Выполняет пепеворот карты лицом вверх.
-void faceToDown (Card *i);	///<Выполняет переворот карты рубашкой вверх.
+void faceToUp (Card *c);	///<Выполняет пепеворот карты лицом вверх.
+void faceToDown (Card *c);	///<Выполняет переворот карты рубашкой вверх.
+void toStream(Card *c);		///<Вывод в поток.
 
 #endif // CARD_H

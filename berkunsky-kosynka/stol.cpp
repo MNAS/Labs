@@ -52,25 +52,6 @@ bool Stol::operator==(const Stol& other)
     return true;
 }
 
-/*
-void Stol::output()
-{
-    int sdClosedSize = sd->closed->cards->size();
-    int sdOpenedSize = sd->opened->cards->size();
-
-    std::cout<<"Стол"<<"\n";
-    sd->output();
-
-    int size = stopki->size();
-    std::cout<<"Стол.Стопки\n";
-    for (int i=0; i<size; i++) {
-        std::cout<<"Стопка "<<i;
-        stopki->at(i)->output();
-    }
-    dom->output();
-}
-*/
-
 std::ostream& operator<<(std::ostream &os, Stol &st)
 {
     int sdClosedSize = st.sd->closed->cards->size();
@@ -314,7 +295,6 @@ void Stol::loop()
     while(exit) 
     {
 	std::cout<<*this;
-//        output();
         std::cout<<"Menu:"<<"\n"
 	<<"0 - Exit;\n"<<"1 - Next Card;"<<"\n"
 	<<"2 [Из_стопки] [В_стопку] [К-во_карт]"<<"\n"

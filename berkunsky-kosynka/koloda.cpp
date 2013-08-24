@@ -73,16 +73,6 @@ void Koloda::peretosovat()
         }
 }
 
-/*
-void Koloda::output()
-{
-        for ( int i=0; i<N; ++i ) {
-                std::cout<<" "<<i;
-                cards[i]->output();
-        }
-}
-*/
-
 void Koloda::cardsFaceUp()
 {
         for_each ( cards.begin(), cards.end(), faceToUp );

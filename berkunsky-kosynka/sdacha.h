@@ -16,8 +16,6 @@ public:
     ~Sdacha();
     Sdacha& operator=(const Sdacha& other);
     bool operator==(const Sdacha& other);
-    
-//    void output();
 private:
     friend std::ostream & operator<<(std::ostream & os, Sdacha & sd);
 

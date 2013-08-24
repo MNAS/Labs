@@ -58,16 +58,6 @@ int Card::getSostoyanie() const
     return sostoyanie;
 }
 
-/*
-void Card::output() const
-{
-    if (getSostoyanie() == 0)
-        std::cout << "[]";
-    else
-        std::cout << name();
-}
-*/
-
 std::ostream &operator<< (std::ostream &os, const Card &C)
 {
     if (C.getSostoyanie() == 0)
@@ -141,4 +131,9 @@ void faceToUp(Card *i)
 void faceToDown(Card *i)
 {
     i->setSostoyanie(0);
+}
+
+void toStream(Card *c)
+{
+
 }

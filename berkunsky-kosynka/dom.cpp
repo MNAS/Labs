@@ -29,28 +29,6 @@ bool Dom::operator==(const Dom& other)
 
 }
 
-/*
-void Dom::output()
-{
-    std::cout<<"\nDom";
-
-    if(A->cards->empty()) std::cout<<"--";
-    else A->output();
-
-    if(B->cards->empty()) std::cout<<"--";
-    else B->output();
-
-    if(C->cards->empty())  std::cout<<"--";
-    else C->output();
-
-    if(D->cards->empty())  std::cout<<"--";
-    else D->output();
-
-    std::cout<<"\n";
-    std::cout.flush();
-}
-*/
-
 std::ostream & operator<<(std::ostream & os, Dom & d)
 {
     os<<"Дом\n";
