@@ -56,18 +56,17 @@ std::ostream& operator<<(std::ostream &os, Stol &st)
 {
     int sdClosedSize = st.sd->closed->cards->size();
     int sdOpenedSize = st.sd->opened->cards->size();
-
-    os<<"Стол"<<"\n";
     os<<(*st.sd);
-//    st.sd->output();
-
+    std::string k="asdfghj";
+    std::string K="ASDFGHJ";
+    
     int size = st.stopki->size();
-    os<<"Стол.Стопки\n";
-    for (int i=0; i<size; i++) {
-        os<<"Стопка "<<i<<" ";
-        os<<(*st.stopki->at(i));//->output();
+    for (int i=0; i<size; i++)
+    {
+        os<<"K"<<i<<" "<<"{"<<k.at(i)<<"}"<<"{"<<K.at(i)<<"}"<<" ";
+        os<<(*st.stopki->at(i));
     }
-    os<<(*st.dom);//->output();
+    os<<(*st.dom);
     return os;
 }
 
@@ -334,20 +333,23 @@ void Stol::loop()
 
 void Stol::loop1()
 {
-/*
-  StructFind sFrom=null;
-    StructFind sTo=null;
-    boolean exit=true;
-    Scanner scan= new Scanner(System.in);
-    while(exit) {
-        output();
-        System.out.println("Menu:\nExit - Exit from program;");
-        System.out.println("N - Next Card;");
-        System.out.println("From  To - из в. Из мб - Дом;");
 
-        String from = null;
-        String to = null;
-        String a=scan.nextLine();
+//    StructFind sFrom=null;
+//    StructFind sTo=null;
+    bool exit=true;
+//    Scanner scan= new Scanner(System.in);
+    while(exit) 
+    {
+        std::cout<<*this;
+        std::cout<<"Menu:\nexit - Exit from program;";
+        std::cout<<"From To - из в. To мб - home;";
+
+        std::string from = NULL;
+        std::string to = NULL;
+        std::string a = NULL;
+    }
+//        scan.nextLine();
+/*
         String[] split = a.split(" ");
         System.out.println(a);
         if(split.length==1) {

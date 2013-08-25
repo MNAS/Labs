@@ -29,11 +29,10 @@ bool Sdacha::operator==(const Sdacha& other)
 
 std::ostream & operator<<(std::ostream & os, Sdacha & sd)
 {
-    os<<"Сдача.Закрытая ";
-    os<<(*sd.closed);//->output();
-    os<<"\n";
-    std::cout<<"Сдача.Открытая ";
-    os<<(*sd.opened);//->output();
-    os<<"\n";
+    std::string r="qw";
+    os<<"RC "<<"{"<<r.at(0)<<"}"<<" ";
+    os<<(*sd.closed);
+    os<<"RO "<<"{"<<r.at(1)<<"}"<<" ";
+    os<<(*sd.opened);
     os.flush();
 }

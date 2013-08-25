@@ -43,16 +43,15 @@ public:
     Stol& operator=(const Stol& other);
     bool operator==(const Stol& other);
     
-//    void output();
     friend std::ostream& operator<<(std::ostream &os, Stol& st);
     void moveStopkaDom(int s);
-    void moveDomStopka(int mast, int s );///<Перемещение масти mast из дома в стопку s.
-    void moveStopkaStopka(int sFrom, int sTo, int num );///<Перемещение из количества карт num из стопки sFrom в стопку sTo.
+    void moveDomStopka(int mast, int s );			///<Перемещение масти mast из дома в стопку s.
+    void moveStopkaStopka(int sFrom, int sTo, int num );	///<Перемещение из количества карт num из стопки sFrom в стопку sTo.
     void moveRazdachaStopka(int sTo);
     void moveRazdachaDom();
-    void openNext();
+    void openNext();						///<Открытие следующей карты.
 ///    StructFind findByName(String name);
-    void loop();
+    void loop();						///<Цикл выполнения команд
     void loop1();
 };
 
