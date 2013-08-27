@@ -1,5 +1,9 @@
 #include "stol.h"
 #include <iostream>
+#include <vector>
+#include <string>
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/split.hpp>
 
 int Stol::N=7;
 
@@ -9,14 +13,24 @@ Stol::Stol():k(0),dom(0),sd(0),selected(0),stopki(0)
     dom=new Dom;
     sd=new Sdacha;
     selected=new Stopka;
+    
     stopki=new std::vector<Stopka*>;
-
-    k->peretosovat();
-    int kolN=0;//
     for (int i=0; i<N ; ++i)
     {
         Stopka *s=new Stopka;
         stopki->push_back(s);
+    }
+    razdacha();
+}
+
+void Stol::razdacha()
+{
+    clear();
+    k->peretosovat();
+    k->cardsFaceDown();
+    int kolN=0;//
+    for (int i=0; i<N ; ++i)
+    {
         for(int j=0; j<=i; ++j)
         {
             stopki->at(i)->cards->push_back(k->getKoloda()->at(kolN++));
@@ -29,7 +43,20 @@ Stol::Stol():k(0),dom(0),sd(0),selected(0),stopki(0)
     {
         sd->closed->cards->push_back(k->getKoloda()->at(kolN++));//Добавление в склытую часть сдачи карт.
     }
+}
 
+void Stol::clear()
+{
+    for (int i=0; i<N ; ++i)
+    {
+        stopki->at(i)->cards->clear();
+    }
+    sd->opened->cards->clear();
+    sd->closed->cards->clear();
+    dom->A->cards->clear();
+    dom->B->cards->clear(); 
+    dom->C->cards->clear();
+    dom->D->cards->clear();
 }
 
 Stol::Stol(const Stol& other)
@@ -68,6 +95,21 @@ std::ostream& operator<<(std::ostream &os, Stol &st)
     }
     os<<(*st.dom);
     return os;
+}
+
+void Stol::moveStopkaDom(Stopka *from, Stopka *to)
+{
+    Card *cd=from->getLastCard();
+    if(cd==NULL) 
+	return;
+    Card *a=stDom->getLastCard();
+    if( (a==NULL && cd->getStarshinstvo()==0) ||
+            (cd->getStarshinstvo()-a->getStarshinstvo()==1))
+    {
+///        stopki->at(s)->cards->erase(stopki->at(s)->cards->begin()+cd);
+        stDom->cards->push_back(cd);
+        stopki->at(s)->openLastCard();
+    }
 }
 
 void Stol::moveStopkaDom(int s)
@@ -132,6 +174,29 @@ void Stol::moveDomStopka(int mast, int s )
         stopki->at(s)->cards->push_back(cd);
     }
 
+}
+
+void Stol::moveStopkaStopka(Stopka *from, Stopka *to, int num )
+{
+
+    Card *cd=from->cards->at(from->cards->size()-num);//snimaem num ot kraya kart
+    if(cd==NULL || cd->getSostoyanie()==0)
+        return;
+    Card *a=to->getLastCard();//karta iz stopki 2
+
+    if((a==NULL && cd->getStarshinstvo()==12)
+            || (a!=NULL && a->isBlack()!=cd->isBlack() &&
+                a->getStarshinstvo()-cd->getStarshinstvo()==1))
+    {
+        int iFrom=from->cards->size()-num;
+        int iTo=from->cards->size();
+        for(int i=iFrom; i<iTo;++i)
+        {
+    	    to->cards->push_back(from->cards->at(i));
+        }
+        from->cards->erase(from->cards->begin()+iFrom, from->cards->end());
+        from->openLastCard();
+    }
 }
 
 void Stol::moveStopkaStopka(int sFrom, int sTo, int num )
@@ -208,17 +273,16 @@ void Stol::openNext()
     Card *cd=sd->closed->getFirstCard();
     if(cd == NULL)
     {
- //       sd->closed->cards->addAll(sd->opened->cards);
-        sd->opened->cards->clear();
+        sd->closed->cards->swap(*sd->opened->cards);
+//        sd->opened->cards->clear();
         sd->closed->closeCards();
     }
     else
     {
- //       sd->closed->cards->remove(cd);
-        sd->opened->cards->push_back(cd);
-        cd->setSostoyanie(1);
+	sd->closed->cards->erase(sd->closed->cards->begin());
+	sd->opened->cards->push_back(cd);
+	cd->setSostoyanie(1);
     }
-
 }
 
 
@@ -290,18 +354,81 @@ StructFind Stol::findByName(String name)
 
 void Stol::loop()
 {
-    bool exit=true;
-    while(exit) 
+    std::string t;
+    std::vector<std::string> vt;
+    bool doing=true;
+    while(doing) 
     {
 	std::cout<<*this;
-        std::cout<<"Menu:"<<"\n"
-	<<"0 - Exit;\n"<<"1 - Next Card;"<<"\n"
-	<<"2 [Из_стопки] [В_стопку] [К-во_карт]"<<"\n"
-	<<"3 [Из_стопки] - из стопки в дом"<<"\n"
-        <<"4 [Из_дома_масть] [В_стопку номер] - из дома в стопку"<<"\n"
-        <<"5 [В_стопку номер] - из раздачи в стопку"<<"\n"
-        <<"6 - из раздачи в дом"<<"\n";
 	std::cout.flush();
+	std::getline(std::cin,t);
+	boost::split(vt,t,boost::is_any_of(" "), boost::token_compress_on);
+	if(vt.size()==1 && vt.at(0)=="exit")
+	    doing=false;
+	else if(vt.size()==1 && vt.at(0)=="help")
+	    help();
+	else if(vt.size()==1 && vt.at(0)=="new")
+	    razdacha();
+	else if(vt.size()==1 && vt.at(0)=="q")
+	    openNext();
+	else if(vt.size()==2)
+	{
+	    std::string st="asdfghj";
+	    std::string ST="ASDFGHJ";
+	    std::string d="zxcv";
+
+	    int d_from=-1;
+	    int d_to=-1;
+	    
+	    bool f_stopka=false;
+	    bool t_stopka=false;
+	    bool f_dom=false;
+	    bool t_dom=false;
+
+	    Stopka * from=NULL;
+	    Stopka * to=NULL;
+	    for(int i=0; i<st.size(); ++i)
+		if(vt.at(0)==std::string(1,st.at(i)))
+		{    
+		    from=stopki->at(i);
+		    f_stopka=true;
+		}
+	    if(from) std::cout<<*from;
+	    for(int i=0; i<st.size(); ++i)
+		if(vt.at(1)==std::string(1,st.at(i)))
+		{
+		    to=stopki->at(i);
+		    t_stopka=true;
+		}
+	    if(to) std::cout<<*to;
+	    
+	    for(int i=0; i<d.size(); ++i)
+		if(vt.at(0)==std::string(1,d.at(i)))
+		    d_from=i;
+	    for(int i=0; i<d.size();++i)
+		if(vt.at(1)==std::string(1, d.at(i)))
+		    d_to=i;
+	    switch(d_from)
+	    {
+		case 0: from=dom->A; f_dom=true; break;
+		case 1: from=dom->B; f_dom=true; break;
+		case 2: from=dom->C; f_dom=true; break;
+		case 3: from=dom->D; f_dom=true; break;
+		default: break;
+	    }
+	    switch(d_to)
+	    {
+		case 0: to=dom->A; t_dom=true; break;
+		case 1: to=dom->B; t_dom=true; break;
+		case 2: to=dom->C; t_dom=true; break;
+		case 3: to=dom->D; t_dom=true; break;
+		default: break;
+	    }
+	    if ( f_stopka && t_stopka )
+	    {
+		moveStopkaStopka(from, to, 1);
+	    }
+	}
     }
 /*
         String a=scan.nextLine();
@@ -344,9 +471,9 @@ void Stol::loop1()
         std::cout<<"Menu:\nexit - Exit from program;";
         std::cout<<"From To - из в. To мб - home;";
 
-        std::string from = NULL;
-        std::string to = NULL;
-        std::string a = NULL;
+        std::string from;
+        std::string to;
+        std::string a;
     }
 //        scan.nextLine();
 /*
@@ -402,3 +529,22 @@ void Stol::loop1()
 */    
 }
 
+void Stol::help()
+{
+    std::cout<<"Пасьянс косынка (консольная)"<<"\n"
+	<<"Перечень доступных команд:"<<"\n"
+	<<"exit - выход из пронраммы;"<<"\n"
+	<<"help - вывод на экран данной справки;"<<"\n"
+	<<"Команды перетаскивания карт:"<<"\n"
+	<<"Из_стопки [В_стопку]"<<"\n"
+	<<"Из_стопки - обозначение стопки (символ, заключенный в фигурные скобки)"<<"\n"
+	<<"или обозначеие карты."<<"\n"
+	<<"Обозначения старшинства карт:"<<"\n"
+	<<"A - туз; 2, 3, 4, 5, 6, 7, 8, 9, T - десятка,"<<"\n"
+	<<"J - валет, Q - дама, K король"<<"\n"
+	<<"Обозначения мастей:"<<"\n"
+	<<"s - пики, c - трефы, d - бубны, h - червы."<<"\n";
+    std::cout.flush();
+    std::string s;
+    std::getline(std::cin, s);
+}
