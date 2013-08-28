@@ -114,7 +114,6 @@ void Stol::moveStopkaDom(Stopka *from, Stopka *to)
 
 void Stol::moveDomStopka(Stopka *from, Stopka *to)
 {
-    
     Card *cd=from->getLastCard();
     if(cd==NULL) 
 	return;
@@ -150,72 +149,36 @@ void Stol::moveStopkaStopka(Stopka *from, Stopka *to, int num )
     }
 }
 
-void Stol::moveStopkaStopka(int sFrom, int sTo, int num )
+void Stol::moveRazdachaStopka(Stopka *from, Stopka *to)
 {
-
-    Card *cd=stopki->at(sFrom)->cards->at(stopki->at(sFrom)->cards->size()-num);//snimaem num ot kraya kart
-    if(cd==NULL || cd->getSostoyanie()==0)
-        return;
-    Card *a=stopki->at(sTo)->getLastCard();//karta iz stopki 2
-
-    if((a==NULL && cd->getStarshinstvo()==12)
-            || (a!=NULL && a->isBlack()!=cd->isBlack() &&
-                a->getStarshinstvo()-cd->getStarshinstvo()==1))
+    Card *cd=from->getLastCard();
+    if(cd==NULL) 
+	return;
+    Card *a=to->getLastCard();
+    if(
+	(!a && cd->getStarshinstvo()==13) ||
+	(a && a->isBlack()!=cd->isBlack() && 
+	a->getStarshinstvo()-cd->getStarshinstvo()==1))
     {
-        int iFrom=stopki->at(sFrom)->cards->size()-num;
-        int iTo=stopki->at(sFrom)->cards->size();
-
-
-//        std::vector<Card*> subList = stopki->at(sFrom)->cards->subList(iFrom,iTo);
-//        stopki->at(sTo)->cards->addAll(subList);
-//        stopki->at(sFrom)->cards->removeAll(subList);
-        stopki->at(sFrom)->openLastCard();
+        to->cards->push_back(cd);
+        from->cards->erase(from->cards->end()-1, from->cards->end());
+        from->openLastCard();
     }
 }
 
-void Stol::moveRazdachaStopka(int sTo)
+void Stol::moveRazdachaDom(Stopka *from, Stopka *to)
 {
-
-    Card *cd=sd->opened->getLastCard();//karta iz razdachi
+    Card *cd=from->getLastCard();
     if(cd==NULL) return;
-    Card *a=stopki->at(sTo)->getLastCard();//karta iz stopki
-    if((a==NULL && cd->getStarshinstvo()==12)
-            ||(a!=NULL && a->isBlack()!=cd->isBlack() && a->getStarshinstvo()-cd->getStarshinstvo()==1))
+    Card *a=to->getLastCard();
+    if( (!a && cd->getStarshinstvo()==1) ||
+        (cd->getStarshinstvo()-a->getStarshinstvo()==1 &&
+	 cd->getMast()==a->getMast()) 
+        )
     {
-//        sd->opened->cards->remove(cd);
-        stopki->at(sTo)->cards->push_back(cd);
-
-    }
-
-}
-
-void Stol::moveRazdachaDom()
-{
-    Stopka *stDom = NULL;
-
-    Card *cd=sd->opened->getLastCard();
-    if(cd==NULL) return;
-    else {
-        switch(cd->getMast()) {
-        case 0:
-            stDom=dom->A;
-            break;
-        case 1:
-            stDom=dom->B;
-            break;
-        case 2:
-            stDom=dom->C;
-            break;
-        case 3:
-            stDom=dom->D;
-            break;
-        }
-        Card *a=stDom->getLastCard();
-        if( (a==NULL && cd->getStarshinstvo()==0) ||
-                (cd->getStarshinstvo()-a->getStarshinstvo()==1)) {
-//            sd->opened->cards.remove(cd);
-            stDom->cards->push_back(cd);
-        }
+        to->cards->push_back(cd);
+        from->cards->erase(from->cards->end()-1, from->cards->end());
+        from->openLastCard();
     }
 }
 
@@ -322,8 +285,11 @@ void Stol::loop()
 	    razdacha();
 	else if(vt.size()==1 && vt.at(0)=="q")
 	    openNext();
-	else if(vt.size()==2)
+	else if(vt.size()>=2)
 	{
+	    int numCards=1;
+	    if(vt.size()==3)
+		numCards=std::stoi(vt.at(2));
 	    std::string st="asdfghj";
 	    std::string ST="ASDFGHJ";
 	    std::string d="zxcv";
@@ -331,6 +297,7 @@ void Stol::loop()
 	    int d_from=-1;
 	    int d_to=-1;
 	    
+	    bool f_sdacha=false;
 	    bool f_stopka=false;
 	    bool t_stopka=false;
 	    bool f_dom=false;
@@ -338,13 +305,19 @@ void Stol::loop()
 
 	    Stopka * from=NULL;
 	    Stopka * to=NULL;
+	    
+	    if(vt.at(0)==std::string(1,'w'))
+	    {
+		f_sdacha=true;
+		from=sd->opened;
+	    }
 	    for(int i=0; i<st.size(); ++i)
 		if(vt.at(0)==std::string(1,st.at(i)))
 		{    
 		    from=stopki->at(i);
 		    f_stopka=true;
 		}
-	    if(from) std::cout<<*from;
+//	    if(from) std::cout<<*from;
 	    for(int i=0; i<st.size(); ++i)
 		if(vt.at(1)==std::string(1,st.at(i)))
 		{
@@ -376,11 +349,15 @@ void Stol::loop()
 		default: break;
 	    }
 	    if ( f_stopka && t_stopka )
-		moveStopkaStopka(from, to, 1);
+		moveStopkaStopka(from, to, numCards);
 	    else if ( f_stopka && t_dom)
 		moveStopkaDom(from, to);
 	    else if ( f_dom && t_stopka)
 		moveDomStopka(from,to);
+	    else if ( f_sdacha && t_stopka )
+		moveRazdachaStopka(from,to);
+	    else if ( f_sdacha && t_dom)
+		moveRazdachaDom(from, to);
 	}
     }
 /*

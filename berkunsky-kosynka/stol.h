@@ -45,20 +45,20 @@ public:
     
     void razdacha();	///<Выполняет раздачу карт на стопки.
     void clear();	///<Выполняет очистку стопок, раздачи и дома.
-    
-    friend std::ostream& operator<<(std::ostream &os, Stol& st);
+
     void moveStopkaDom(Stopka *from, Stopka *to);		///<Перемещение карты из стопки в дом.
-//  void moveDomStopka(int mast, int s );			///<Перемещение масти mast из дома в стопку s.
     void moveDomStopka(Stopka *from, Stopka *to);		///<Перемещение масти mast из дома в стопку s.
     void moveStopkaStopka(int sFrom, int sTo, int num );	///<Перемещение из количества карт num из стопки sFrom в стопку sTo.
     void moveStopkaStopka(Stopka *from, Stopka *to, int num=1); ///<Перемещение из стопки ИЗ в стопку В количества карт num.
-    void moveRazdachaStopka(int sTo);
-    void moveRazdachaDom();
+    void moveRazdachaStopka(Stopka *from, Stopka *to);
+    void moveRazdachaDom(Stopka *from, Stopka *to);
     void openNext();						///<Открытие следующей карты.
 ///    StructFind findByName(String name);
     void loop();						///<Цикл выполнения команд
     void loop1();
     void help();
+private:
+    friend std::ostream& operator<<(std::ostream &os, Stol& st);
 };
 
 
