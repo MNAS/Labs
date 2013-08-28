@@ -102,78 +102,29 @@ void Stol::moveStopkaDom(Stopka *from, Stopka *to)
     Card *cd=from->getLastCard();
     if(cd==NULL) 
 	return;
-    Card *a=stDom->getLastCard();
-    if( (a==NULL && cd->getStarshinstvo()==0) ||
-            (cd->getStarshinstvo()-a->getStarshinstvo()==1))
+    Card *a=to->getLastCard();
+    if( (a==NULL && cd->getStarshinstvo()==1) ||
+            (a && cd->getStarshinstvo()-a->getStarshinstvo()==1))
     {
-///        stopki->at(s)->cards->erase(stopki->at(s)->cards->begin()+cd);
-        stDom->cards->push_back(cd);
-        stopki->at(s)->openLastCard();
+        to->cards->push_back(cd);
+        from->cards->erase(from->cards->end()-1, from->cards->end());
+        from->openLastCard();
     }
 }
 
-void Stol::moveStopkaDom(int s)
+void Stol::moveDomStopka(Stopka *from, Stopka *to)
 {
-    Stopka *stDom = NULL;
-
-    Card *cd=stopki->at(s)->getLastCard();
-    if(cd==NULL) return;
-    else {
-        switch(cd->getMast())
-        {
-        case 0:
-            stDom=dom->A;
-            break;
-        case 1:
-            stDom=dom->B;
-            break;
-        case 2:
-            stDom=dom->C;
-            break;
-        case 3:
-            stDom=dom->D;
-            break;
-        }
-        Card *a=stDom->getLastCard();
-        if( (a==NULL && cd->getStarshinstvo()==0) ||
-                (cd->getStarshinstvo()-a->getStarshinstvo()==1))
-        {
-///            stopki->at(s)->cards->erase(stopki->at(s)->cards->begin()+cd);
-            stDom->cards->push_back(cd);
-            stopki->at(s)->openLastCard();
-        }
-
-    }
-}
-
-void Stol::moveDomStopka(int mast, int s )
-{
-    Card *cd=NULL;
-    Stopka *a=NULL;
-    switch(mast) {
-    case 0:
-        a=dom->A;
-        break;
-    case 1:
-        a=dom->B;
-        break;
-    case 2:
-        a=dom->C;
-        break;
-    case 3:
-        a=dom->D;
-        break;
-    }
-    if(a!=NULL)
+    
+    Card *cd=from->getLastCard();
+    if(cd==NULL) 
+	return;
+    Card *a=to->getLastCard();
+    if(a && a->getStarshinstvo()-cd->getStarshinstvo()==1)
     {
-        cd=a->getFirstCard();
-        if(cd!=NULL)
-	{
- //           a->cards->erase(cd);//////////////////////
-	}
-        stopki->at(s)->cards->push_back(cd);
+        to->cards->push_back(cd);
+        from->cards->erase(from->cards->end()-1, from->cards->end());
+        from->openLastCard();
     }
-
 }
 
 void Stol::moveStopkaStopka(Stopka *from, Stopka *to, int num )
@@ -425,9 +376,11 @@ void Stol::loop()
 		default: break;
 	    }
 	    if ( f_stopka && t_stopka )
-	    {
 		moveStopkaStopka(from, to, 1);
-	    }
+	    else if ( f_stopka && t_dom)
+		moveStopkaDom(from, to);
+	    else if ( f_dom && t_stopka)
+		moveDomStopka(from,to);
 	}
     }
 /*
