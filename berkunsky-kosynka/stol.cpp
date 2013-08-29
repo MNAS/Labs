@@ -134,7 +134,7 @@ void Stol::moveStopkaStopka(Stopka *from, Stopka *to, int num )
         return;
     Card *a=to->getLastCard();//karta iz stopki 2
 
-    if((a==NULL && cd->getStarshinstvo()==12)
+    if((a==NULL && cd->getStarshinstvo()==13)
             || (a!=NULL && a->isBlack()!=cd->isBlack() &&
                 a->getStarshinstvo()-cd->getStarshinstvo()==1))
     {
