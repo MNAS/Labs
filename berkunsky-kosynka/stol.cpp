@@ -104,7 +104,9 @@ void Stol::moveStopkaDom(Stopka *from, Stopka *to)
 	return;
     Card *a=to->getLastCard();
     if( (a==NULL && cd->getStarshinstvo()==1) ||
-            (a && cd->getStarshinstvo()-a->getStarshinstvo()==1))
+        (a && cd->getStarshinstvo()-a->getStarshinstvo()==1) &&
+	 cd->getMast()==a->getMast()
+    )
     {
         to->cards->push_back(cd);
         from->cards->erase(from->cards->end()-1, from->cards->end());
@@ -118,7 +120,9 @@ void Stol::moveDomStopka(Stopka *from, Stopka *to)
     if(cd==NULL) 
 	return;
     Card *a=to->getLastCard();
-    if(a && a->getStarshinstvo()-cd->getStarshinstvo()==1)
+    if(a && a->getStarshinstvo()-cd->getStarshinstvo()==1 &&
+	 cd->isBlack()!=a->isBlack()
+    )
     {
         to->cards->push_back(cd);
         from->cards->erase(from->cards->end()-1, from->cards->end());
@@ -276,6 +280,8 @@ void Stol::loop()
 	std::cout<<*this;
 	std::cout.flush();
 	std::getline(std::cin,t);
+	t=boost::trim_copy(t);
+	
 	boost::split(vt,t,boost::is_any_of(" "), boost::token_compress_on);
 	if(vt.size()==1 && vt.at(0)=="exit")
 	    doing=false;
