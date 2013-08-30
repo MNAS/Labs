@@ -36,6 +36,7 @@ public:
     Card(const std::string &s);
     
     bool operator==(const Card &c) const;
+//    bool operator==(const Card *c) const;
 
     bool isBlack() const;	///<Возвращает true если масть является черной;
     bool isRed() const;		///<Возвращает true если масть является красной;

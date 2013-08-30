@@ -365,6 +365,22 @@ void Stol::loop()
 	    if ( !f_stopka && !f_sdacha && !f_dom)
 	    {
 		std::cout<<"Not recognised from." << std::endl;
+		for(int i=0; i<N; ++i)
+		{
+//		    std::cout<<i<<std::endl;
+		    for(int j=0; j<stopki->at(i)->cards->size(); ++j)
+		    {
+			Card &ref=*stopki->at(i)->cards->at(j);
+			if(ref==Card(std::string(vt.at(0)))
+			)
+			{
+			    std::cout<<i<<" "<<j<<" "<<ref<<std::endl;
+			}
+		    }
+//		    std::find(
+//			stopki->at(i)->cards->begin(),
+//			stopki->at(i)->cards->end(), Card(std::string("5h")));
+		}
 	    }
 	    if ( !t_stopka && !t_dom)
 	    {
