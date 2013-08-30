@@ -40,6 +40,8 @@ public:
 
     bool isBlack() const;	///<Возвращает true если масть является черной;
     bool isRed() const;		///<Возвращает true если масть является красной;
+    bool isFaceUp() const;
+    bool isFaceDown() const;
     void setMast(int mast);
     void setStarshinstvo(int starshinstvo);
     void setSostoyanie(int sostoyanie);

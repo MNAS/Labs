@@ -183,3 +183,16 @@ void toStream(Card *c)
 {
 
 }
+
+bool Card::isFaceUp() const
+{
+    if(getSostoyanie()==1)
+	return true;
+    else 
+	return false;
+}
+
+bool Card::isFaceDown() const
+{
+    return !isFaceUp();
+}

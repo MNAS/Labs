@@ -371,10 +371,13 @@ void Stol::loop()
 		    for(int j=0; j<stopki->at(i)->cards->size(); ++j)
 		    {
 			Card &ref=*stopki->at(i)->cards->at(j);
-			if(ref==Card(std::string(vt.at(0)))
-			)
+			if(ref==Card(std::string(vt.at(0))) &&
+			    ref.isFaceUp())
 			{
-			    std::cout<<i<<" "<<j<<" "<<ref<<std::endl;
+			    numCards=stopki->at(i)->cards->size()-j;
+			    std::cout<<i<<" "<<j<<" "<<numCards<<" "<<ref<<std::endl;
+			    from=stopki->at(i);
+			    f_stopka=true;
 			}
 		    }
 //		    std::find(
