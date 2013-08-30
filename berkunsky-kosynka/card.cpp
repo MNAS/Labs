@@ -6,7 +6,7 @@
 int Card::numMast = 4;
 int Card::numStarsh = 13;
 
-Card::Card() : mast(2), starshinstvo(6), sostoyanie(1)
+Card::Card() : mast(0), starshinstvo(1), sostoyanie(0)
 {}
 
 Card::Card(int a_mast, int a_starshinstvo, int a_sostoyanie)
@@ -15,14 +15,55 @@ Card::Card(int a_mast, int a_starshinstvo, int a_sostoyanie)
     , sostoyanie(a_sostoyanie)
 {}
 
-bool Card::isBlack()
+Card::Card(const std::string &s): mast(0), starshinstvo(1), sostoyanie(1)
+{
+    if(s.size()!=2)
+	return;
+    char st=s.at(0);
+    char ma=s.at(1);
+    switch(st)
+    {
+	case 'A': starshinstvo=1; break;
+	case '2': starshinstvo=2; break;
+	case '3': starshinstvo=3; break;
+	case '4': starshinstvo=4; break;	
+	case '5': starshinstvo=5; break;
+	case '6': starshinstvo=6; break;
+	case '7': starshinstvo=7; break;
+	case '8': starshinstvo=8; break;
+	case '9': starshinstvo=9; break;
+	case 'T': starshinstvo=10; break;
+	case 'J': starshinstvo=11; break;
+	case 'Q': starshinstvo=12; break;
+	case 'K': starshinstvo=13; break;
+	defuault: break;
+    }
+    switch(ma)
+    {
+	case 's': mast=0; break;
+	case 'c': mast=1; break;
+	case 'd': mast=2; break;
+	case 'h': mast=3; break;
+	default : break;
+    }
+}
+
+bool Card::operator==(const Card &c) const
+{
+    if(mast==c.mast && starshinstvo==c.starshinstvo)
+	return true;
+    return false;
+}
+
+
+bool Card::isBlack() const
 {
     if (getMast() < 2)
         return true;
     return false;
 }
 
-bool Card::isRed()
+bool Card::isRed() const
 {
     return !isBlack();
 }
@@ -63,7 +104,12 @@ std::ostream &operator<< (std::ostream &os, const Card &C)
     if (C.getSostoyanie() == 0)
         std::cout << "[]";
     else
-        std::cout << C.name();
+    {
+	if(C.isRed())
+            std::cout << "\e[1;31m"<<C.name()<<"\e[0m";
+        else
+    	    std::cout << "\e[1;32m"<<C.name()<<"\e[0m";
+    }
     return os;
 }
 

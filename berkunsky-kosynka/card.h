@@ -32,10 +32,13 @@ public:
     static int numStarsh;	///< Количество значений карт;
 
     Card();
-    Card(int mast, int starshinstvo, int sostoyanie);    
+    Card(int mast, int starshinstvo, int sostoyanie=0);
+    Card(const std::string &s);
+    
+    bool operator==(const Card &c) const;
 
-    bool isBlack();		///<Возвращает true если масть является черной;
-    bool isRed();		///<Возвращает true если масть является красной;
+    bool isBlack() const;	///<Возвращает true если масть является черной;
+    bool isRed() const;		///<Возвращает true если масть является красной;
     void setMast(int mast);
     void setStarshinstvo(int starshinstvo);
     void setSostoyanie(int sostoyanie);

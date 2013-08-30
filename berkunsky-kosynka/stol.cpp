@@ -332,7 +332,6 @@ void Stol::loop()
 		    from=stopki->at(i);
 		    f_stopka=true;
 		}
-//	    if(from) std::cout<<*from;
 	    for(int i=0; i<st.size(); ++i)
 		if(vt.at(1)==std::string(1,st.at(i)))
 		{
@@ -363,6 +362,15 @@ void Stol::loop()
 		case 3: to=dom->D; t_dom=true; break;
 		default: break;
 	    }
+	    if ( !f_stopka && !f_sdacha && !f_dom)
+	    {
+		std::cout<<"Not recognised from." << std::endl;
+	    }
+	    if ( !t_stopka && !t_dom)
+	    {
+		std::cout<<"Not recognised to." << std::endl;
+	    }
+	    
 	    if ( f_stopka && t_stopka )
 		moveStopkaStopka(from, to, numCards);
 	    else if ( f_stopka && t_dom)
