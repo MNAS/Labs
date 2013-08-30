@@ -294,8 +294,17 @@ void Stol::loop()
 	else if(vt.size()>=2)
 	{
 	    int numCards=1;
+	    try
+	    {
 	    if(vt.size()==3)
 		numCards=std::stoi(vt.at(2));
+	    }
+	    catch(...)
+	    {
+		std::cout<<"Replacing :"<<t<<"\n"
+		<<"to :"<<vt.at(0)<<" "<<vt.at(1)<<" "<<1<<std::endl;
+		numCards=1;
+	    }
 	    std::string st="asdfghj";
 	    std::string ST="ASDFGHJ";
 	    std::string d="zxcv";
