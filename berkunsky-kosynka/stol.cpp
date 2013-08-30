@@ -364,10 +364,8 @@ void Stol::loop()
 	    }
 	    if ( !f_stopka && !f_sdacha && !f_dom)
 	    {
-		std::cout<<"Not recognised from." << std::endl;
 		for(int i=0; i<N; ++i)
 		{
-//		    std::cout<<i<<std::endl;
 		    for(int j=0; j<stopki->at(i)->cards->size(); ++j)
 		    {
 			Card &ref=*stopki->at(i)->cards->at(j);
@@ -380,11 +378,28 @@ void Stol::loop()
 			    f_stopka=true;
 			}
 		    }
-//		    std::find(
-//			stopki->at(i)->cards->begin(),
-//			stopki->at(i)->cards->end(), Card(std::string("5h")));
 		}
 	    }
+	    
+	    if ( !t_stopka && !t_dom)
+	    {
+		for(int i=0; i<N; ++i)
+		{
+		    for(int j=0; j<stopki->at(i)->cards->size(); ++j)
+		    {
+			Card &ref=*stopki->at(i)->cards->at(j);
+			if(ref==Card(std::string(vt.at(1))) &&
+			    ref.isFaceUp())
+			{
+			    std::cout<<i<<" "<<j<<" "<<numCards<<" "<<ref<<std::endl;
+			    to=stopki->at(i);
+			    t_stopka=true;
+			}
+		    }
+		}
+	    }
+	    
+	    
 	    if ( !t_stopka && !t_dom)
 	    {
 		std::cout<<"Not recognised to." << std::endl;
