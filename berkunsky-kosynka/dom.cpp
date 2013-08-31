@@ -32,19 +32,19 @@ bool Dom::operator==(const Dom &other)
 std::ostream &operator<<(std::ostream &os, Dom &d)
 {
     std::string h = "zxcv";
-    os << "H " << "{" << h.at(0) << "}" << " ";
+    os << "H1 " << "{" << h.at(0) << "}" << " ";
     if (d.A->cards->empty()) os << "--\n";
     else os << (*d.A);
 
-    os << "H " << "{" << h.at(1) << "}" << " ";
+    os << "H2 " << "{" << h.at(1) << "}" << " ";
     if (d.B->cards->empty()) os << "--\n";
     else os << (*d.B);
 
-    os << "H " << "{" << h.at(2) << "}" << " ";
+    os << "H3 " << "{" << h.at(2) << "}" << " ";
     if (d.C->cards->empty())  os << "--\n";
     else os << (*d.C);
 
-    os << "H " << "{" << h.at(3) << "}" << " ";
+    os << "H4 " << "{" << h.at(3) << "}" << " ";
     if (d.D->cards->empty())  os << "--";
     else os << (*d.D);
 
