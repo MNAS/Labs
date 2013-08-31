@@ -1,8 +1,8 @@
 # Maintainer: Nick Matvyeyev <mnasoft@gmail.com>
-#pkgname=terminal-card-games
-pkgname=berkunsky-kosynka
+
+pkgname=terminal-card-games
 pkgver=20130831
-pkgrel=1
+pkgrel=2
 pkgdesc="Card games in terminal."
 url="http://www.mnasoft.mksat.net"
 arch=('x86_64' 'i686')
@@ -13,11 +13,10 @@ makedepends=('git' 'cmake')
 conflicts=()
 replaces=()
 backup=()
-#install='terminal-card-games.install'
 
 _gitroot='https://github.com/MNAS/Labs.git'
 _gitname='Labs'
-_gitsubdir='berkunsky-kosynka'
+_gitsubdir='terminal-card-games'
 
 
 build() {
