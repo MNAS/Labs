@@ -1,8 +1,6 @@
 #include "stopka.h"
 #include <iostream>
 
-int Stopka::numStopok=7;
-
 Stopka::Stopka():cards(0)
 {
     cards = new std::vector<Card*>;
@@ -27,19 +25,6 @@ bool Stopka::operator==(const Stopka& other)
 {
 
 }
-
-/*
-void Stopka::output()
-{
-    int size = cards->size();
-    for(int i=0; i<size; ++i) {
-        cards->at(i)->output();
-        std::cout<<" ";
-    }
-    std::cout<<"\n";
-    std::cout.flush();
-}
-*/
 
 std::ostream & operator<<(std::ostream &os, Stopka &s)
 {
@@ -76,13 +61,4 @@ void Stopka::closeCards()
     int size=cards->size();
     for(int i=0; i<size; ++i)
         cards->at(i)->setSostoyanie(0);
-}
-
-void Stopka::StopkaStopka()
-{
-
-}
-
-void Stopka::StopkaDom() {
-
 }

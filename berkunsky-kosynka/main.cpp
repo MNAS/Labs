@@ -14,9 +14,4 @@ int main()
 {
     Stol *st=new Stol;
     st->loop();
-//    Card a(std::string("5d"));
-//    Card b(std::string("5d"));
-//    std::cout<<"a="<<a<<" "<<"b="<<b<<std::endl;
-//    a==b;
-//    std::cout<<(a==b)<<std::endl;
 }

@@ -14,21 +14,14 @@ public:
     Stopka& operator=(const Stopka& other);
     bool operator==(const Stopka& other);
     
-    std::vector<Card*> *cards;
+    std::vector<Card*> *cards;	///<Вектор указателей на карты составляющие стопку.
 
-    static int numStopok;	///< Количество стопок.
-
-//    void output();
-    void openLastCard();
+    void openLastCard();	///<Перевернуть последнюю карту в стопке лицом вверх.
     Card * getLastCard();
     Card * getFirstCard();
-    void closeCards();
+    void closeCards();		///<Перевернуть все карты в стопке рубашкой вверх.
 private:
-    void StopkaStopka();
-    void StopkaDom();
     friend std::ostream & operator<<(std::ostream & os, Stopka & s);
 };
-
-
 
 #endif // STOPKA_H

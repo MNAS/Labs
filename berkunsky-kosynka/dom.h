@@ -5,6 +5,7 @@
 
 class Dom
 {
+    friend std::ostream &operator<<(std::ostream &os, Dom &d);
 public:
     Stopka *A;
     Stopka *B;
@@ -12,11 +13,9 @@ public:
     Stopka *D;
 public:
     Dom();
-    Dom(const Dom& other);
+    Dom(const Dom &other);
     ~Dom();
-    Dom& operator=(const Dom& other);
-    bool operator==(const Dom& other);
-private:
-    friend std::ostream& operator<<(std::ostream & os, Dom & d);
+    Dom &operator=(const Dom &other);
+    bool operator==(const Dom &other);
 };
 #endif // DOM_H
