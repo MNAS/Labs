@@ -307,6 +307,13 @@ void Stol::loop()
                         }
                     }
                 }
+
+                Card *c = sd->opened->getLastCard();
+                if (c && *c == Card(std::string(vt.at(0))) && c->isFaceUp()) {
+                    from = sd->opened;
+                    f_sdacha = true;
+                }
+                
             }
 
             if (!t_stopka && !t_dom) {
