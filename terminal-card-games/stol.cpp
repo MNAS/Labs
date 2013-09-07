@@ -7,8 +7,7 @@
 
 int Stol::N_stopok = 7;
 
-Stol::Stol(): k(0), dom(0), sd(0), selected(0), stopki(0)
-{
+Stol::Stol(): k(0), dom(0), sd(0), selected(0), stopki(0) {
     k = new Koloda;
     dom = new Dom;
     sd = new Sdacha;
@@ -22,8 +21,7 @@ Stol::Stol(): k(0), dom(0), sd(0), selected(0), stopki(0)
     razdacha();
 }
 
-void Stol::razdacha()
-{
+void Stol::razdacha() {
     clear();
     k->peretosovat();
     k->cardsFaceDown();
@@ -41,8 +39,7 @@ void Stol::razdacha()
     }
 }
 
-void Stol::clear()
-{
+void Stol::clear() {
     for (int i = 0; i < N_stopok ; ++i) {
         stopki->at(i)->cards->clear();
     }
@@ -54,28 +51,23 @@ void Stol::clear()
     dom->D->cards->clear();
 }
 
-Stol::Stol(const Stol &other)
-{
+Stol::Stol(const Stol &other) {
 
 }
 
-Stol::~Stol()
-{
+Stol::~Stol() {
 
 }
 
-Stol &Stol::operator=(const Stol &other)
-{
+Stol &Stol::operator=(const Stol &other) {
 
 }
 
-bool Stol::operator==(const Stol &other)
-{
+bool Stol::operator==(const Stol &other) {
     return true;
 }
 
-std::ostream &operator<<(std::ostream &os, Stol &st)
-{
+std::ostream &operator<<(std::ostream &os, Stol &st) {
     int sdClosedSize = st.sd->closed->cards->size();
     int sdOpenedSize = st.sd->opened->cards->size();
     os << (*st.sd);
@@ -90,8 +82,7 @@ std::ostream &operator<<(std::ostream &os, Stol &st)
     return os;
 }
 
-void Stol::moveStopkaDom(Stopka *from, Stopka *to)
-{
+void Stol::moveStopkaDom(Stopka *from, Stopka *to) {
     Card *cd = from->getLastCard();
     if (cd == NULL)
         return;
@@ -106,8 +97,7 @@ void Stol::moveStopkaDom(Stopka *from, Stopka *to)
     }
 }
 
-void Stol::moveDomStopka(Stopka *from, Stopka *to)
-{
+void Stol::moveDomStopka(Stopka *from, Stopka *to) {
     Card *cd = from->getLastCard();
     if (cd == NULL)
         return;
@@ -121,8 +111,7 @@ void Stol::moveDomStopka(Stopka *from, Stopka *to)
     }
 }
 
-void Stol::moveStopkaStopka(Stopka *from, Stopka *to, int num)
-{
+void Stol::moveStopkaStopka(Stopka *from, Stopka *to, int num) {
 
     Card *cd = from->cards->at(from->cards->size() - num); //snimaem num ot kraya kart
     if (cd == NULL || cd->getSostoyanie() == 0)
@@ -142,8 +131,7 @@ void Stol::moveStopkaStopka(Stopka *from, Stopka *to, int num)
     }
 }
 
-void Stol::moveRazdachaStopka(Stopka *from, Stopka *to)
-{
+void Stol::moveRazdachaStopka(Stopka *from, Stopka *to) {
     Card *cd = from->getLastCard();
     if (cd == NULL)
         return;
@@ -158,13 +146,12 @@ void Stol::moveRazdachaStopka(Stopka *from, Stopka *to)
     }
 }
 
-void Stol::moveRazdachaDom(Stopka *from, Stopka *to)
-{
+void Stol::moveRazdachaDom(Stopka *from, Stopka *to) {
     Card *cd = from->getLastCard();
     if (cd == NULL) return;
     Card *a = to->getLastCard();
     if ((!a && cd->getStarshinstvo() == 1) ||
-            (cd->getStarshinstvo() - a->getStarshinstvo() == 1 &&
+            (a && cd->getStarshinstvo() - a->getStarshinstvo() == 1 &&
              cd->getMast() == a->getMast())
        ) {
         to->cards->push_back(cd);
@@ -173,21 +160,20 @@ void Stol::moveRazdachaDom(Stopka *from, Stopka *to)
     }
 }
 
-void Stol::openNext()
-{
+void Stol::openNext() {
     Card *cd = sd->closed->getFirstCard();
     if (cd == NULL) {
         sd->closed->cards->swap(*sd->opened->cards);
         sd->closed->closeCards();
-    } else {
+    }
+    else {
         sd->closed->cards->erase(sd->closed->cards->begin());
         sd->opened->cards->push_back(cd);
         cd->setSostoyanie(1);
     }
 }
 
-void Stol::loop()
-{
+void Stol::loop() {
     std::string t;
     std::vector<std::string> vt;
     bool doing = true;
@@ -211,14 +197,14 @@ void Stol::loop()
             try {
                 if (vt.size() == 3)
                     numCards = std::stoi(vt.at(2));
-            } catch (...) {
+            }
+            catch (...) {
                 std::cout << "Replacing :" << t << "\n"
                           << "to :" << vt.at(0) << " " << vt.at(1) << " " << 1 << std::endl;
                 numCards = 1;
             }
-            std::string st = "asdfghj";
-//            std::string ST = "ASDFGHJ";
-            std::string d = "zxcv";
+            std::string st = "asdfghj";		//Буквенные обозначения стопок
+            std::string d = "zxcv";		//Буквенные обозначения мест в доме
 
             int d_from = -1;
             int d_to = -1;
@@ -232,70 +218,50 @@ void Stol::loop()
             Stopka *from = NULL;
             Stopka *to = NULL;
 
-            if (vt.at(0) == std::string(1, 'w')) {
+            if (vt.at(0) == std::string(1, 'w')) {	//из открытой части раздачи
                 f_sdacha = true;
                 from = sd->opened;
             }
-            for (int i = 0; i < st.size(); ++i)
+
+            for (int i = 0; i < st.size(); ++i)		//из i-товой стопки
                 if (vt.at(0) == std::string(1, st.at(i))) {
                     from = stopki->at(i);
                     f_stopka = true;
                 }
-            for (int i = 0; i < st.size(); ++i)
+
+            for (int i = 0; i < st.size(); ++i)		//в i-товую стопку
                 if (vt.at(1) == std::string(1, st.at(i))) {
                     to = stopki->at(i);
                     t_stopka = true;
                 }
-            if (to) std::cout << *to;
 
-            for (int i = 0; i < d.size(); ++i)
+//             if (to) std::cout << *to;
+
+            for (int i = 0; i < d.size(); ++i)		//из опреденного места в доме
                 if (vt.at(0) == std::string(1, d.at(i)))
                     d_from = i;
-            for (int i = 0; i < d.size(); ++i)
+            switch (d_from) {
+            case 0: from = dom->A; f_dom = true; break;
+            case 1: from = dom->B; f_dom = true; break;
+            case 2: from = dom->C; f_dom = true; break;
+            case 3: from = dom->D; f_dom = true; break;
+            default: break;
+            }
+
+            for (int i = 0; i < d.size(); ++i)		//в определенное место в доме
                 if (vt.at(1) == std::string(1, d.at(i)))
                     d_to = i;
-            switch (d_from) {
-            case 0:
-                from = dom->A;
-                f_dom = true;
-                break;
-            case 1:
-                from = dom->B;
-                f_dom = true;
-                break;
-            case 2:
-                from = dom->C;
-                f_dom = true;
-                break;
-            case 3:
-                from = dom->D;
-                f_dom = true;
-                break;
-            default:
-                break;
-            }
             switch (d_to) {
-            case 0:
-                to = dom->A;
-                t_dom = true;
-                break;
-            case 1:
-                to = dom->B;
-                t_dom = true;
-                break;
-            case 2:
-                to = dom->C;
-                t_dom = true;
-                break;
-            case 3:
-                to = dom->D;
-                t_dom = true;
-                break;
-            default:
-                break;
+            case 0: to = dom->A; t_dom = true; break;
+            case 1: to = dom->B; t_dom = true; break;
+            case 2: to = dom->C; t_dom = true; break;
+            case 3: to = dom->D; t_dom = true; break;
+            default: break;
             }
-            if (!f_stopka && !f_sdacha && !f_dom) {
-                for (int i = 0; i < N_stopok; ++i) {
+
+            if (!f_stopka && !f_sdacha && !f_dom) {	//Определение стопки из по наименованию карты
+
+                for (int i = 0; i < N_stopok; ++i) {	//Поиск карты по наименованию в стопках
                     for (int j = 0; j < stopki->at(i)->cards->size(); ++j) {
                         Card &ref = *stopki->at(i)->cards->at(j);
                         if (ref == Card(std::string(vt.at(0))) &&
@@ -308,16 +274,42 @@ void Stol::loop()
                     }
                 }
 
-                Card *c = sd->opened->getLastCard();
+                Card *c = NULL;
+
+                c = sd->opened->getLastCard();	//Поиск карты по наименованию в открытой части сдачи
                 if (c && *c == Card(std::string(vt.at(0))) && c->isFaceUp()) {
                     from = sd->opened;
                     f_sdacha = true;
                 }
-                
+
+                c = dom->A->getLastCard();	//Поиск карты по наименованию стопке A дома
+                if (c && *c == Card(std::string(vt.at(0))) && c->isFaceUp()) {
+                    from = dom->A;
+                    f_dom = true;
+                }
+
+                c = dom->B->getLastCard();	//Поиск карты по наименованию стопке B дома
+                if (c && *c == Card(std::string(vt.at(0))) && c->isFaceUp()) {
+                    from = dom->B;
+                    f_dom = true;
+                }
+
+                c = dom->C->getLastCard();	//Поиск карты по наименованию стопке C дома
+                if (c && *c == Card(std::string(vt.at(0))) && c->isFaceUp()) {
+                    from = dom->C;
+                    f_dom = true;
+                }
+
+                c = dom->D->getLastCard();	//Поиск карты по наименованию стопке D дома
+                if (c && *c == Card(std::string(vt.at(0))) && c->isFaceUp()) {
+                    from = dom->D;
+                    f_dom = true;
+                }
+
             }
 
-            if (!t_stopka && !t_dom) {
-                for (int i = 0; i < N_stopok; ++i) {
+            if (!t_stopka && !t_dom) {		//Определение стопки в по наименованию карты
+                for (int i = 0; i < N_stopok; ++i) {	//Поиск карты по наименованию в стопках
                     for (int j = 0; j < stopki->at(i)->cards->size(); ++j) {
                         Card &ref = *stopki->at(i)->cards->at(j);
                         if (ref == Card(std::string(vt.at(1))) &&
@@ -328,12 +320,34 @@ void Stol::loop()
                         }
                     }
                 }
+
+                Card *c = NULL;
+		
+		c = dom->A->getLastCard();	//Поиск карты по наименованию стопке A дома
+                if (c && *c == Card(std::string(vt.at(1))) && c->isFaceUp()) {
+                    to = dom->A;
+                    t_dom = true;
+                }
+
+                c = dom->B->getLastCard();	//Поиск карты по наименованию стопке B дома
+                if (c && *c == Card(std::string(vt.at(1))) && c->isFaceUp()) {
+                    to = dom->B;
+                    t_dom = true;
+                }
+
+                c = dom->C->getLastCard();	//Поиск карты по наименованию стопке C дома
+                if (c && *c == Card(std::string(vt.at(1))) && c->isFaceUp()) {
+                    to = dom->C;
+                    t_dom = true;
+                }
+
+                c = dom->D->getLastCard();	//Поиск карты по наименованию стопке D дома
+                if (c && *c == Card(std::string(vt.at(1))) && c->isFaceUp()) {
+                    to = dom->D;
+                    t_dom = true;
+                }
             }
 
-
-            if (!t_stopka && !t_dom) {
-                std::cout << "Not recognised to." << std::endl;
-            }
 
             if (f_stopka && t_stopka)
                 moveStopkaStopka(from, to, numCards);
@@ -349,8 +363,7 @@ void Stol::loop()
     }
 }
 
-void Stol::help()
-{
+void Stol::help() {
     std::cout << "Пасьянс косынка (консольная)." << "\n"
               << "Перечень доступных команд:" << "\n"
               << "exit - выход из программы;" << "\n"
