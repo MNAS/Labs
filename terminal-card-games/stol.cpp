@@ -217,7 +217,7 @@ void Stol::loop()
                 numCards = 1;
             }
             std::string st = "asdfghj";
-            std::string ST = "ASDFGHJ";
+//            std::string ST = "ASDFGHJ";
             std::string d = "zxcv";
 
             int d_from = -1;
