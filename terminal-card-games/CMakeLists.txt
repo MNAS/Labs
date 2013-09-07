@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
+
+set(CMAKE_BUILD_TYPE Debug)
+#Debug|Release|RelWithDebInfo|MinSizeRel
+
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static")
+
 project(terminal-card-games)
 
 add_definitions(-std=c++11)
