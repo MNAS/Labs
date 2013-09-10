@@ -11,13 +11,17 @@
 class Stol
 {
     friend std::ostream &operator<<(std::ostream &os, Stol &st);
-private:
+public:
     static int N_stopok;						///<Количество стопок.
     Koloda *k;								///<Колода карт.
     Dom *dom;								///<Дом, состоящий из 4-х стопок.
     Sdacha *sd;								///<Раздача, состоящая из открытой и закрытой частей.
     std::vector<Stopka *> *stopki;					///<Вектор стопок.
     Stopka *selected;							///<Перетаскиваемые карты
+
+private:
+    bool isWin();							///<Возвращает true если игра закончилась победой.
+    bool isLoose();							///<Возвращает true если игра закончилась поражением.
 public:
     Stol();
     Stol(const Stol &other);

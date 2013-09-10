@@ -20,6 +20,7 @@ public:
     Card * getLastCard();
     Card * getFirstCard();
     void closeCards();		///<Перевернуть все карты в стопке рубашкой вверх.
+    bool isAllOpend();		///<Возвращает true если все карты стопки перевернуты лицом вверх.
 private:
     friend std::ostream & operator<<(std::ostream & os, Stopka & s);
 };
