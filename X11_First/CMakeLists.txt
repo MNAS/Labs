@@ -1,6 +1,6 @@
 project(x11_first)
 
-add_executable(x11_first main.cpp)
+add_executable(x11_first drect.cpp irect.cpp ipoint.cpp dpoint.cpp windowparams.cpp main.cpp)
 
 find_library(lx11 X11)
 

@@ -7,13 +7,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "windowparams.h"
  
 int main()
 {
     Display *display;
     Window window;
     XEvent event;
-    char *msg = "Hello, World!";
+    char msg[] = "Hello, World!";
     int s;
  
     /* open connection with the server */
@@ -46,10 +47,11 @@ int main()
         {
   	    XWindowAttributes wattr;
 	    XGetWindowAttributes(display, window, &wattr);
+	    
             XFillRectangle(display, window, DefaultGC(display, s), 20, 20, 10, 10);
             XDrawString(display, window, DefaultGC(display, s), wattr.width/2, wattr.height/2, msg, strlen(msg));
 	    XDrawLine(display, window, DefaultGC(display, s),0,0,wattr.width,wattr.height);
-	    XD
+//	    XD
         }
         /* exit on key press */
         if (event.type == KeyPress)
