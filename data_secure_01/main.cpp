@@ -12,12 +12,12 @@ int main(int argc, char **argv)
     std::map<QChar, QString> map_color;
     std::map<QChar, int>::iterator it;
     std::map<QChar, double>::iterator it_color;
-	
-	QString abc=QString::fromUtf8("абвгдеёжзийклмнопрстуфхцчшщьыъэюя");
-	for(int i=0;i<abc.size();++i)//переписали все русские буквы в маймэп
-	{
-		mymap[abc[i]]=0;//их частота в начале равна 0
-	}
+
+    QString abc=QString::fromUtf8("абвгдеёжзийклмнопрстуфхцчшщьыъэюя");
+    for(int i=0; i<abc.size(); ++i) //переписали все русские буквы в маймэп
+    {
+        mymap[abc[i]]=0;//их частота в начале равна 0
+    }
 
     QTextStream cout(stdout);//создание текстового вывода в стандартный поток вывода.нужен для вывода русскоязычных символов
     cout.setCodec("UTF-8");//символы преобразуются в кодировку UTF-8
@@ -33,16 +33,16 @@ int main(int argc, char **argv)
 
         while (!in.atEnd()) {//пока не дошло до конца файла
             in >> ch;//из потока считывается по букве в переменную ч
-			ch=ch.toLower();//преобразование символа в нижний регистр
+            ch=ch.toLower();//преобразование символа в нижний регистр
             it = mymap.find(ch);//находит симфол в ассоц.массиве и заночит его индекс в итератор ит
-            if (it !=  mymap.end())//если нашло букву в массиве,то  
+            if (it !=  mymap.end())//если нашло букву в массиве,то
                 it->second++;//second - второе значение в ассоц.массиве
         }
     }
     in_f.close();//закрыли файл
 
     int counter = 0;
-	//проход по всему ассоц.массиву маймэп и считает кол-во букв
+    //проход по всему ассоц.массиву маймэп и считает кол-во букв
     for (std::map<QChar, int>::iterator i = mymap.begin(); i != mymap.end(); ++i) {
         counter += i->second;
     }
@@ -70,19 +70,19 @@ int main(int argc, char **argv)
         cout << i->first << " " << i->second  << "\n";
     }*/
 
-	
+
     if (in_f.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&in_f);
         in.setCodec("UTF-8");
 
         while (!in.atEnd()) {
             in >> ch;
-			QChar copyCh=ch.toLower();
-			it_color = map_color.find(copyCh);//находит симфол в ассоц.массиве и заночит его индекс в итератор ит
-            if (it_color != map_color.end())//если нашло букву в массиве,то  
-				cout << map_color[ch] << ch << "\e[0m";
-			else
-				cout << ch << "\e[0m";
+            QChar copyCh=ch.toLower();
+            it_color = map_fr.find(copyCh);//находит симфол в ассоц.массиве и заночит его индекс в итератор ит
+            if (it_color != map_fr.end())//если нашло букву в массиве,то
+                cout << map_color[ch] << ch << "\e[0m";
+            else
+                cout << ch ;
         }
     }
     in_f.close();
