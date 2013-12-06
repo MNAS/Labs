@@ -23,22 +23,52 @@
 class typing_characteristics : public QMainWindow
 {
     Q_OBJECT
+    
 public:
-    QWidget *centralwidget;
+    typing_characteristics();
+    virtual ~typing_characteristics();
+    
+private slots:
+     void newSampleText();
+     void setupText();
+     void testText();
+     
+     void setupTextEdited(const QString & text);
+     void testTextEdited(const QString & text);
+     
+
+private:
+     void setupUI();
+     void createActions();
+     void createMenus();
+     void createToolBars();
+     void createStatusBar();
+    
+private:
+    QMenu *fileMenu;
+    QAction *sampleTextAct; // Задание нового примера для ввода текста
+    QAction *setupTextAct; //
+    QAction *testTextAct; //
+    
+public:
+    QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
     QFormLayout *formLayout;
-    QLabel *Label;
-    QLineEdit *LineEdit;
-    QLabel *sdfsdfsLabel;
-    QLineEdit *sdfsdfsLineEdit;
+    
+    QLabel *SampleTextLabel;
+    QLineEdit *SampleTextLineEdit;
+    
+    QLabel *setupTextLabel;
+    QLineEdit *setupTextLineEdit;
+    
+    QLabel *testTextLabel;
+    QLineEdit *testTextLineEdit;
+   
     QSpacerItem *verticalSpacer;
     QPushButton *pushButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
-
-public:
-    typing_characteristics();
-    virtual ~typing_characteristics();
+    
 };
 
 #endif // typing_characteristics_H
