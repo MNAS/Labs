@@ -19,6 +19,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 #include <QtCore/QDateTime>
+#include <math.h>
 
 
 class typing_characteristics : public QMainWindow
@@ -30,41 +31,34 @@ public:
     virtual ~typing_characteristics();
     
 private slots:
-     void sampleText();
-     void setupText();
-     void testText();
      
-     void setupTextEdited(const QString & text);
-     void testTextEdited(const QString & text);
+     void setupTextEdited(const QString & text);//
+     void testTextEdited(const QString & text);//
      
 private:
-  QDateTime dateTimeSetupStart;
-  qint64 deltaTimeSetup;
+  QDateTime dateTimeSetupStart;///<содержит время начала набора символов администратора
   QDateTime dateTimeTestStart;
-  qint64 deltaTimeTest;
+
   
   QList<qint64> delaySetup;
-  QList<qint64> delayTest; 
+  QList<qint64> delayTest;///<содержит при наборе вреям задержки от первого символа до каждого следующего,а после преобразования - время задержки между каждым символом 
   
-  double get_M_Setup();
-  double get_M_Test();
+  void calc_M_Setup();
+  void calc_M_Test();
+  void calc_S_Setup();
+  void calc_S_Test();
+  void compare_setupS_testS();
   
-  void delaySetupToDelta();
+  void delaySetupToDelta();///<функция преобразовывает время от 1 символа до каждого последующего во время задержки между любыми символами
   void delayTestToDelta();
 
 private:
      void setupUI();
      void createActions();
-     void createMenus();
      void createToolBars();
      void createStatusBar();
     
-private:
-    QMenu *fileMenu;
-    QAction *sampleTextAct; // Задание нового примера для ввода текста
-    QAction *setupTextAct; //
-    QAction *testTextAct; //
-    
+
 public:
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
@@ -79,11 +73,14 @@ public:
     QLabel *testTextLabel;
     QLineEdit *testTextLineEdit;
    
-    QSpacerItem *verticalSpacer;
-    QPushButton *pushButton;
-    QMenuBar *menubar;
+//    QSpacerItem *verticalSpacer;
     QStatusBar *statusbar;
     
+private:
+    double setupM;//переменная М - чсреднее значения для ввода символа (для ввода администратора)
+    double testM;// для ввода пользователя
+    double setupS;
+    double testS;
 };
 
 #endif // typing_characteristics_H
