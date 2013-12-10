@@ -18,6 +18,7 @@
 #include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+#include <QtCore/QDateTime>
 
 
 class typing_characteristics : public QMainWindow
@@ -29,13 +30,27 @@ public:
     virtual ~typing_characteristics();
     
 private slots:
-     void newSampleText();
+     void sampleText();
      void setupText();
      void testText();
      
      void setupTextEdited(const QString & text);
      void testTextEdited(const QString & text);
      
+private:
+  QDateTime dateTimeSetupStart;
+  qint64 deltaTimeSetup;
+  QDateTime dateTimeTestStart;
+  qint64 deltaTimeTest;
+  
+  QList<qint64> delaySetup;
+  QList<qint64> delayTest; 
+  
+  double get_M_Setup();
+  double get_M_Test();
+  
+  void delaySetupToDelta();
+  void delayTestToDelta();
 
 private:
      void setupUI();
