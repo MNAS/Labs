@@ -1,11 +1,12 @@
+cmake_minimum_required(VERSION 2.8.8)
 project(typing_characteristics)
-cmake_minimum_required(VERSION 2.6)
-find_package(Qt4 REQUIRED)
 
-include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(typing_characteristics_SRCS typing_characteristics.cpp main.cpp)
-qt4_automoc(${typing_characteristics_SRCS})
-add_executable(typing_characteristics ${typing_characteristics_SRCS})
-target_link_libraries(typing_characteristics ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
+find_package(Qt5Widgets REQUIRED)
+
+add_executable(typing_characteristics typing_characteristics.cpp main.cpp)
+
+qt5_use_modules(typing_characteristics Widgets Gui Core Test)
 install(TARGETS typing_characteristics RUNTIME DESTINATION bin)

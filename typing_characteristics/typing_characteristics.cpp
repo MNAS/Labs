@@ -1,11 +1,11 @@
 #include "typing_characteristics.h"
 
-#include <QtGui/QLabel>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
-#include <QtGui/QAction>
-#include <QtGui/QFormLayout>
-#include <QtGui/QLineEdit>
+#include <QLabel>
+#include <QMenu>
+#include <QMenuBar>
+#include <QAction>
+#include <QFormLayout>
+#include <QLineEdit>
 
 typing_characteristics::typing_characteristics()
 {

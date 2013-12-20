@@ -1,4 +1,5 @@
-#include <QtGui/QApplication>
+#include <QApplication>
+
 #include "typing_characteristics.h"
 
 
