@@ -1,24 +1,24 @@
 #ifndef typing_characteristics_H
 #define typing_characteristics_H
 
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 
-#include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QFormLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QMainWindow>
-#include <QtGui/QMenuBar>
-#include <QtGui/QPushButton>
-#include <QtGui/QSpacerItem>
-#include <QtGui/QStatusBar>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
-#include <QtCore/QDateTime>
+#include <QVariant>
+#include <QAction>
+#include <QApplication>
+#include <QButtonGroup>
+#include <QFormLayout>
+#include <QHeaderView>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMainWindow>
+#include <QMenuBar>
+#include <QPushButton>
+#include <QSpacerItem>
+#include <QStatusBar>
+#include <QVBoxLayout>
+#include <QWidget>
+#include <QDateTime>
 #include <math.h>
 
 

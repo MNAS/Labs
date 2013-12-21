@@ -1,18 +1,18 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.8)
+project(terminal-card-games)
 
-set(CMAKE_BUILD_TYPE Debug)
-#Debug|Release|RelWithDebInfo|MinSizeRel
-
+set(CMAKE_BUILD_TYPE Debug) #Debug|Release|RelWithDebInfo|MinSizeRel
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static")
 
-project(terminal-card-games)
+#set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 add_definitions(-std=c++11)
 
-set(berkunsky-kosynka_SRCS stol.cpp sdacha.cpp dom.cpp koloda.cpp stopka.cpp card.cpp main.cpp)
+find_package(Qt5Widgets REQUIRED)
 
-add_executable(terminal-card-games ${berkunsky-kosynka_SRCS})
+set(kosynka_SRCS stol.cpp sdacha.cpp dom.cpp koloda.cpp stopka.cpp card.cpp main.cpp)
+add_executable(terminal-card-games ${kosynka_SRCS})
 
-#target_link_libraries(terminal-card-games ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
-
+#qt5_use_modules(typing_characteristics Widgets Gui Core Test)
 install(TARGETS terminal-card-games RUNTIME DESTINATION bin)
