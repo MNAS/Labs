@@ -10,66 +10,63 @@
 
 //#include "../connection.h"
 
-void initializeModel(QSqlTableModel *model)
-{
-    model->setTable("t1");
-//    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    model->setEditStrategy(QSqlTableModel::OnFieldChange);
+void initializeModel ( QSqlTableModel *model ) {
+    model->setTable ( "t1" );
+    model->setEditStrategy ( QSqlTableModel::OnFieldChange );
 
     model->select();
 
-    model->setHeaderData(0, Qt::Horizontal, QObject::tr("name"));
-    model->setHeaderData(1, Qt::Horizontal, QObject::tr("country"));
-    model->setHeaderData(2, Qt::Horizontal, QObject::tr("type"));
+    model->setHeaderData ( 0, Qt::Horizontal, QObject::tr ( "name" ) );
+    model->setHeaderData ( 1, Qt::Horizontal, QObject::tr ( "country" ) );
+    model->setHeaderData ( 2, Qt::Horizontal, QObject::tr ( "type" ) );
 
-    model->setHeaderData(3, Qt::Horizontal, QObject::tr("length"));
-    model->setHeaderData(4, Qt::Horizontal, QObject::tr("width"));
-    model->setHeaderData(5, Qt::Horizontal, QObject::tr("draft"));
+    model->setHeaderData ( 3, Qt::Horizontal, QObject::tr ( "length" ) );
+    model->setHeaderData ( 4, Qt::Horizontal, QObject::tr ( "width" ) );
+    model->setHeaderData ( 5, Qt::Horizontal, QObject::tr ( "draft" ) );
 
-    model->setHeaderData(6, Qt::Horizontal, QObject::tr("cargo"));
-    model->setHeaderData(7, Qt::Horizontal, QObject::tr("transportation"));
-    model->setHeaderData(8, Qt::Horizontal, QObject::tr("quantity"));
+    model->setHeaderData ( 6, Qt::Horizontal, QObject::tr ( "cargo" ) );
+    model->setHeaderData ( 7, Qt::Horizontal, QObject::tr ( "transportation" ) );
+    model->setHeaderData ( 8, Qt::Horizontal, QObject::tr ( "quantity" ) );
 
-    model->setHeaderData(9, Qt::Horizontal, QObject::tr("berth"));
-    model->setHeaderData(10, Qt::Horizontal, QObject::tr("poc"));
-    model->setHeaderData(11, Qt::Horizontal, QObject::tr("exit"));
+    model->setHeaderData ( 9, Qt::Horizontal, QObject::tr ( "berth" ) );
+    model->setHeaderData ( 10, Qt::Horizontal, QObject::tr ( "poc" ) );
+    model->setHeaderData ( 11, Qt::Horizontal, QObject::tr ( "exit" ) );
 
 }
 
-QTableView *createView(QSqlTableModel *model, const QString &title = "")
-{
+QTableView *createView ( QSqlTableModel *model, const QString &title = "" ) {
     QTableView *view = new QTableView;
-    view->setModel(model);
-    view->setWindowTitle(title);
+    view->setModel ( model );
+    view->setWindowTitle ( title );
     return view;
 }
 
 
-bool createConnection()
-{
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+bool createConnection() {
+    QSqlDatabase db = QSqlDatabase::addDatabase ( "QSQLITE" );
 
-    db.setHostName("localhost");
-    db.setDatabaseName("/home/namatv/MyDoc/git/MNAS/Labs/kpz3/ships.db");
+    db.setHostName ( "localhost" );
+    db.setDatabaseName ( "/home/namatv/MyDoc/git/MNAS/Labs/kpz3/ships.db" );
 
-    if (!db.open()) {
-        QMessageBox::critical(0, qApp->tr("Cannot open database"),
-                              qApp->tr("Unable to establish a database connection.\n"
-                                       "This example needs SQLite support. Please read "
-                                       "the Qt SQL driver documentation for information how "
-                                       "to build it.\n\n"
-                                       "Click Cancel to exit."), QMessageBox::Cancel);
+    if ( !db.open() ) {
+        QMessageBox::critical ( 0, qApp->tr ( "Cannot open database" ),
+                                qApp->tr ( "Unable to establish a database connection.\n"
+                                           "This example needs SQLite support. Please read "
+                                           "the Qt SQL driver documentation for information how "
+                                           "to build it.\n\n"
+                                           "Click Cancel to exit." ), QMessageBox::Cancel );
         return false;
     }
     return true;
 }
 
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
-    
-    ship_main* foo= new ship_main ;
+int main ( int argc, char *argv[] ) {
+    QApplication app ( argc, argv );
+
+    ship_main *foo= new ship_main ;
     foo->show();
+    
+    
 //     if (!createConnection())
 //         return 1;
 // 
@@ -197,3 +194,4 @@ bool createConnection()
     return true;
 }
 */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

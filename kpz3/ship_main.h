@@ -15,21 +15,21 @@
 #include <QTableView>
 
 
-class ship_main: public QMainWindow
-{
+class ship_main: public QMainWindow {
     Q_OBJECT
 
 public:
     ship_main();
     virtual ~ship_main();
-    
+
 private slots:
-  
-  void exitSlot();
-  void insertSlot();
-  void deleteSlot();
-    bool openDbaseSlot();
-  void saveDbaseSlot();
+
+    void exitSlot();
+    void insertSlot();
+    void deleteSlot();
+    bool connectDbaseSlot();
+    bool disConnectDbaseSlot();    
+    void saveDbaseSlot();
 
 private:
     void setupUi();
@@ -37,28 +37,28 @@ private:
     void createMenus();
 
 private:
-    QSqlDatabase db;
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
-    
     QTableView *view;
+private:
+    QSqlDatabase db;
     QSqlTableModel *model;
-    
+
 private:
     QMenu *fileMenu;
     QMenu *editMenu;
-    
-    QAction *openDbaseAct; // Задание нового примера для ввода текста
+
+    QAction *connectDbaseAct; // Задание нового примера для ввода текста
+    QAction *disConnectDbaseAct; // Задание нового примера для ввода текста
     QAction *saveDbaseAct; //
     QAction *testTextAct; //
-    
+
     QAction *insertRowAct; //
-    QAction *deleteRowAct; //   
-    
+    QAction *deleteRowAct; //
+
 };
 
 #endif // SHIP_MAIN_H
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
