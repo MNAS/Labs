@@ -1,4 +1,6 @@
 #include "ship_main.h"
+#include <QFileDialog>
+#include <QMessageBox>
 
 
 ship_main::ship_main()
@@ -112,9 +114,25 @@ void ship_main::deleteSlot()
     this->statusBar()->showMessage(QString("void ship_main::deleteSlot()"));
 }
 
-void ship_main::openDbaseSlot()
+bool ship_main::openDbaseSlot()
 {
-    this->statusBar()->showMessage(QString("void ship_main::openDbaseSlot()"));
+    this->statusBar()->showMessage(QString("Opening DB..."));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open DB"), "/home/namatv/MyDoc/git/MNAS/Labs/kpz3", tr("DataBase Files (*.db)"));
+    
+    db = QSqlDatabase::addDatabase("QSQLITE7");
+    db.setHostName("localhost");
+    db.setDatabaseName(fileName);
+
+    if (!db.open()) {
+        QMessageBox::critical(0, qApp->tr("Cannot open database"),
+                              qApp->tr("Unable to establish a database connection.\n"
+                                       "This example needs SQLite support. Please read "
+                                       "the Qt SQL driver documentation for information how "
+                                       "to build it.\n\n"
+                                       "Click Cancel to exit."), QMessageBox::Cancel);
+        return false;
+    }
+    return true;
 }
 
 void ship_main::saveDbaseSlot()

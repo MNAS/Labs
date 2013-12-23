@@ -28,7 +28,7 @@ private slots:
   void exitSlot();
   void insertSlot();
   void deleteSlot();
-  void openDbaseSlot();
+    bool openDbaseSlot();
   void saveDbaseSlot();
 
 private:
@@ -37,7 +37,7 @@ private:
     void createMenus();
 
 private:
-    QSqlDatabase *db;
+    QSqlDatabase db;
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout;
     QPushButton *pushButton_2;
