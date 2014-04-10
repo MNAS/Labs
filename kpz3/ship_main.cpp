@@ -131,6 +131,49 @@ bool ship_main::connectDbaseSlot() {
     }
     model=new QSqlTableModel;
 
+    model->setTable ( "t2" );
+    model->setEditStrategy ( QSqlTableModel::OnFieldChange ); //QSqlTableModel::OnManualSubmit
+
+    model->select();
+
+    model->setHeaderData ( 0, Qt::Horizontal, QObject::tr ( "Name" ) );
+    model->setHeaderData ( 1, Qt::Horizontal, QObject::tr ( "Country" ) );
+    model->setHeaderData ( 2, Qt::Horizontal, QObject::tr ( "Year" ) );
+
+    model->setHeaderData ( 3, Qt::Horizontal, QObject::tr ( "Genre" ) );
+    model->setHeaderData ( 4, Qt::Horizontal, QObject::tr ( "Producer" ) );
+    model->setHeaderData ( 5, Qt::Horizontal, QObject::tr ( "Budget" ) );
+
+
+    view->setModel ( model );
+    view->setWindowTitle ( QString ( "t2" ) );
+    view->show();
+
+    return true;
+}
+
+bool ship_main::connectDbase_t1_Slot() {
+    this->statusBar()->showMessage ( QString ( "Connecting to DB..." ) );
+    QString fileName = QFileDialog::getOpenFileName ( this,
+                       tr ( "Open DB" ),
+                       "/home/namatv/MyDoc/git/MNAS/Labs/kpz3",
+                       tr ( "DataBase Files (*.db)" ) );
+
+    db = QSqlDatabase::addDatabase ( "QSQLITE" );
+    db.setHostName ( "localhost" );
+    db.setDatabaseName ( fileName );
+
+    if ( !db.open() ) {
+        QMessageBox::critical ( 0, qApp->tr ( "Cannot open database" ),
+                                qApp->tr ( "Unable to establish a database connection.\n"
+                                           "This example needs SQLite support. Please read "
+                                           "the Qt SQL driver documentation for information how "
+                                           "to build it.\n\n"
+                                           "Click Cancel to exit." ), QMessageBox::Cancel );
+        return false;
+    }
+    model=new QSqlTableModel;
+
     model->setTable ( "t1" );
     model->setEditStrategy ( QSqlTableModel::OnFieldChange ); //QSqlTableModel::OnManualSubmit
 

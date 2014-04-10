@@ -28,6 +28,7 @@ private slots:
     void insertSlot();
     void deleteSlot();
     bool connectDbaseSlot();
+    bool connectDbase_t1_Slot();
     bool disConnectDbaseSlot();    
     void saveDbaseSlot();
 
