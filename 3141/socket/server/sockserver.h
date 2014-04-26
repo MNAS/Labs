@@ -22,7 +22,6 @@
 
 #include <sys/socket.h>
 #include <set>
-#include <map>
 
 #ifndef BUF_SIZE
 #define BUF_SIZE 500
@@ -41,15 +40,16 @@ private:
   char buf_in[BUF_SIZE];	// Буфер обмена для входящих сообщений.
   char buf_out[BUF_SIZE];        // Буфер обмена для исходящих сообщений.
   std::set<SockAddr> set_Addr;	// Set of connected clients.
-  std::map<SockAddr,time_t> first;
   time_t dilay;                 // Время задержки в секундах исключением от списка рассылки сообщений сервера.
 public:
-    SockServer(time_t a_Dilay = 60.0);
+    SockServer(time_t a_Dilay = 60);
     bool connect(const char * Port);
     void exec();
     ~SockServer();
     void sendToAll(const std::string & form_host, const std::string & form_servise );		//Направление сообщения всем подключенным клиентам.
     friend std::ostream& operator<<(std::ostream& os, const  SockServer &a );
+    static std::string ctime();
+    void disconnectFromOverdue();
 };
 
 #endif // SOCKSERVER_H

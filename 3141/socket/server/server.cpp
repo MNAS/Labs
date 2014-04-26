@@ -9,7 +9,13 @@
 int main ( int argc, char *argv[] )
 {
   SockServer a;
-  std::cout<<a.connect(argv[1]);
+
+  if ( argc < 2 ) {
+    std::cerr << "Usage: " << argv[0] << " port" << std::endl;
+    exit ( EXIT_FAILURE );
+  }
+
+  a.connect ( argv[1] );
   a.exec();
 }
 
@@ -48,7 +54,7 @@ int main ( int argc, char *argv[] )
 //      getaddrinfo() returns a list of address structures.
 //        Try each address until we successfully bind(2).
 //        If socket(2) (or bind(2)) fails, we (close the socket
-//        and) try the next address. 
+//        and) try the next address.
 
     for ( rp = result; rp != NULL; rp = rp->ai_next ) {
         sfd = socket ( rp->ai_family, rp->ai_socktype, rp->ai_protocol );
@@ -57,7 +63,7 @@ int main ( int argc, char *argv[] )
 
         if ( bind ( sfd, rp->ai_addr, rp->ai_addrlen ) == 0 ) {
             fcntl ( sfd, F_SETFL, O_NONBLOCK );
-            break;                   //Success 
+            break;                   //Success
 
 
         }
@@ -65,12 +71,12 @@ int main ( int argc, char *argv[] )
         close ( sfd );
     }
 
-    if ( rp == NULL ) {              //No address succeeded 
+    if ( rp == NULL ) {              //No address succeeded
         fprintf ( stderr, "Could not bind\n" );
         exit ( EXIT_FAILURE );
     }
 
-    freeaddrinfo ( result );         //No longer needed 
+    freeaddrinfo ( result );         //No longer needed
 
 //     Read datagrams and echo them back to sender
 
@@ -78,7 +84,7 @@ int main ( int argc, char *argv[] )
         peer_addr_len = sizeof ( struct sockaddr_storage );
         nread = recvfrom ( sfd, buf, BUF_SIZE, 0, ( struct sockaddr * ) &peer_addr, &peer_addr_len );
         if ( nread == -1 )
-            continue;                //Ignore failed request 
+            continue;                //Ignore failed request
         char host[NI_MAXHOST], service[NI_MAXSERV];
         s = getnameinfo ( ( struct sockaddr * ) &peer_addr, peer_addr_len, host, NI_MAXHOST, service, NI_MAXSERV, NI_NUMERICSERV );
         if ( s == 0 )

@@ -31,14 +31,15 @@ private:
   sockaddr_storage addr;
   std::string host;
   std::string service;
+//   std::string discTime;
   time_t DisconnectTime;        // Время после, которого клиенту не будут отсылаться сообщения.
 
 //    time ( &rawtime );
   
 public:
   SockAddr();
-  SockAddr( const sockaddr_storage & p_addr, char *a_host, char *a_service );
-  SockAddr & init( const sockaddr_storage & p_addr, char *a_host, char *a_service );
+  SockAddr( const sockaddr_storage& p_addr, char* a_host, char* a_service, time_t delta );
+  SockAddr & init( const sockaddr_storage& p_addr, char* a_host, char* a_service, time_t delta );
   SockAddr(const SockAddr & other);
   
   ~SockAddr();
@@ -48,6 +49,10 @@ public:
   bool operator< (const SockAddr & other) const;
   
   friend std::ostream& operator<<(std::ostream& os, const SockAddr &a );
+  
+//   void cDisconnectTime() const;
+  
+  bool isOverdue() const;
 };
 
 #endif // SOCKSERVER_H

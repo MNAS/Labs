@@ -30,7 +30,7 @@
 #include <time.h>
 #include <string>
 
-SockServer::SockServer( time_t a_Dilay ):dilay(a_Dilay)
+SockServer::SockServer ( time_t a_Dilay ) : dilay ( a_Dilay )
 {
   sfd = -1;
   port = 0;
@@ -101,19 +101,16 @@ void SockServer::exec()
 
     if ( s == 0 ) {
       std::cout << "Received " << nread << " bytes from " << host << ":" << service << std::endl;
-      SockAddr saddr( peer_addr, host, service );
+      SockAddr saddr ( peer_addr, host, service , dilay );
+      set_Addr.erase ( saddr );
       set_Addr.insert ( saddr );
-      
-//       std::set<SockAddr>::iterator it= set_Addr.find(saddr);
-//       if(it != set_Addr.end() )
-//         it->DisconnectTime=time(NULL)+this->dilay;
 
     } else
       std::cerr << "getnameinfo: " << gai_strerror ( s ) << std::endl;
 
     std::cout << *this;
-
-    sendToAll(std::string(host),std::string(service) );
+    disconnectFromOverdue();
+    sendToAll ( std::string ( host ), std::string ( service ) );
   }
 }
 
@@ -122,32 +119,22 @@ SockServer::~SockServer()
 
 }
 
-void SockServer::sendToAll( const std::string& form_host, const std::string& form_servise )
+void SockServer::sendToAll ( const std::string& form_host, const std::string& form_servise )
 {
-  std::cout<<"SockServer::sendToAll() - start"<<std::endl;
+  std::cout << "SockServer::sendToAll() - start" << std::endl;
+
   for ( std::set<SockAddr>::iterator it = set_Addr.begin(); it != set_Addr.end(); ++it ) {
-
-    time_t rawtime;
-    struct tm * timeinfo;
-    time ( &rawtime );
-    timeinfo = localtime ( &rawtime );
-
-
-    strftime (buf_out,BUF_SIZE,"%F %X",timeinfo);
-    std::string out = std::string ( buf_out ) + " " + form_host + "/" + form_servise + ": " + buf_in;
+    std::string out = SockServer::ctime() + " " + form_host + "/" + form_servise + ": " + buf_in;
     strcpy ( buf_out, out.c_str() );
-    std::cout<<buf_out <<std::endl;
-
+    std::cout << "Message :\"" << buf_out << "\"" << " Send to :" << it->host << ":" << it->service << std::endl;
     int nread = strlen ( buf_out ) + 1;
 
     if ( sendto ( sfd, buf_out, nread, 0, ( sockaddr * ) & ( it->addr ), sizeof ( sockaddr_storage ) ) != nread )
       std::cerr << "Error sending response" << std::endl;
   }
-  std::cout<<"SockServer::sendToAll() exit"<<std::endl;
-}
-//         if ( sendto ( sfd, buf, nread, 0, ( sockaddr * ) &peer_addr, peer_addr_len ) != nread )
-//        fprintf ( stderr, "Error sending response\n" );
 
+  std::cout << "SockServer::sendToAll() exit" << std::endl;
+}
 
 std::ostream& operator<< ( std::ostream& os, const SockServer &a )
 {
@@ -155,3 +142,29 @@ std::ostream& operator<< ( std::ostream& os, const SockServer &a )
     std::cout << *it << std::endl;
 }
 
+void SockServer::disconnectFromOverdue()
+{
+  std::set<SockAddr> to_erase;
+
+  for ( std::set<SockAddr>::iterator it = set_Addr.begin(); it != set_Addr.end(); ++it )
+    if ( it->isOverdue() ) {
+      to_erase.insert ( *it );
+      std::cout << *it << " - client removed from the mailing list." << std::endl;
+    }
+
+  for ( std::set<SockAddr>::iterator it = to_erase.begin(); it != to_erase.end(); ++it ) {
+    set_Addr.erase ( *it );
+  }
+
+  to_erase.clear();
+}
+
+
+std::string SockServer::ctime()
+{
+  char buf[80];
+  time_t rawtime = time ( NULL );
+  struct tm * timeinfo = localtime ( &rawtime );
+  strftime ( buf, 80, "%F %X", timeinfo );
+  return std::string ( buf );
+}

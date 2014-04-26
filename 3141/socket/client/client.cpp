@@ -13,11 +13,16 @@
 
 #include "sockclient.h"
 
-int main(int argc, char *argv[])
+int main ( int argc, char *argv[] )
 {
-    SockClient a;
-    std::cout<< a.connect(argv[1], argv[2]);
-    a.exec();
+  SockClient a;
+
+  if ( argc < 3 ) {
+    std::cerr<<"Usage: "<< argv[0]<< " host port"<< std::endl;
+    exit ( EXIT_FAILURE );
+  }
+  a.connect ( argv[1], argv[2] );
+  a.exec();
 }
 
 /*

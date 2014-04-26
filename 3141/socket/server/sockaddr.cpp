@@ -19,60 +19,86 @@
 
 #include "sockaddr.h"
 #include <string.h>
+#include <time.h>
 
-SockAddr::SockAddr(): host(""), service("")
+SockAddr::SockAddr() : host ( "" ), service ( "" )
 {
-  memset(& addr, 0, sizeof (addr));
+  memset ( & addr, 0, sizeof ( addr ) );
+  DisconnectTime = time ( NULL ) + 60.;
 }
 
-SockAddr::SockAddr( const sockaddr_storage & p_addr, char *a_host, char *a_service )
+SockAddr::SockAddr ( const sockaddr_storage& p_addr, char* a_host, char* a_service, time_t delta )
 {
-  memset(& addr, 0, sizeof (addr));
+  memset ( & addr, 0, sizeof ( addr ) );
   addr = p_addr;
   host = a_host;
   service = a_service;
+  DisconnectTime = time ( NULL ) + delta;
 }
 
 
-SockAddr & SockAddr::init( const sockaddr_storage & p_addr, char *a_host, char *a_service )
+SockAddr & SockAddr::init ( const sockaddr_storage& p_addr, char* a_host, char* a_service, time_t delta )
 {
   addr = p_addr;
   host = a_host;
-  service = a_service;  
+  service = a_service;
+  DisconnectTime = time ( NULL ) + delta;
   return *this;
 }
 
-SockAddr::SockAddr(const SockAddr & other)
+SockAddr::SockAddr ( const SockAddr & other )
 {
   addr = other.addr ;
   host = other.host ;
   service = other.service ;
+  DisconnectTime = other.DisconnectTime;
 }
 
-SockAddr& SockAddr::operator= (const SockAddr & other)
+SockAddr& SockAddr::operator= ( const SockAddr & other )
 {
   addr = other.addr ;
   host = other.host ;
   service = other.service ;
+  DisconnectTime = other.DisconnectTime;
 }
 
 SockAddr::~SockAddr()
 {
 }
 
-bool SockAddr::operator== (const SockAddr & other) const
+bool SockAddr::operator== ( const SockAddr & other ) const
 {
   return host == other.host && service == other.service;
 }
 
 bool SockAddr::operator< ( const SockAddr & other ) const
 {
-  if (host < other.host)
+  if ( host < other.host )
     return true;
+
   return service < other.service;
 }
 
-std::ostream& operator<<(std::ostream& os, const SockAddr &a )
+std::ostream& operator<< ( std::ostream& os, const SockAddr &a )
 {
-  os<<a.host<<" "<<a.service<<std::endl;
+  char out[80];
+  struct tm * timeinfo;
+  timeinfo = localtime ( &a.DisconnectTime );
+  strftime ( out, 80, "%F %X", timeinfo );
+  
+  os << a.host << " " << a.service << " Will disconnect at: " << out;
+}
+
+// void SockAddr::cDisconnectTime() const
+// {
+//   char out[80];
+//   struct tm * timeinfo;
+//   timeinfo = localtime ( &DisconnectTime );
+//   strftime ( out, 80, "%F %X", timeinfo );
+//   discTime = std::string(out);
+// }
+
+bool SockAddr::isOverdue() const
+{
+  return time(NULL) > DisconnectTime;
 }
