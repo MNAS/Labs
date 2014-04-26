@@ -24,6 +24,8 @@
 #define BUF_SIZE 500
 #endif
 
+#include <string>
+
 class SockClient
 {
 private:
@@ -36,6 +38,8 @@ public:
     ~SockClient();
     bool connect(char * host, char * port);
     void exec();
+    void receive();             // Получить сообщения, пришедшие на порт клиента.
+    void send(const std::string & msg);                // 
 };
 
 #endif // SOCKCLIENT_H

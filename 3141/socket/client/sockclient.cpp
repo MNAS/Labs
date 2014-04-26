@@ -40,96 +40,111 @@ SockClient::~SockClient()
 {
 }
 
-bool SockClient::connect(char * host, char * port)
+bool SockClient::connect ( char * host, char * port )
 {
-    struct addrinfo hints;
-    struct addrinfo *result, *rp;
-    int s, j;
+  struct addrinfo hints;
+  struct addrinfo *result, *rp;
+  int s, j;
 
-    memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
-    hints.ai_socktype = SOCK_DGRAM; /* Datagram socket */
-    hints.ai_flags = 0;
-    hints.ai_protocol = 0;          /* Any protocol */
+  memset ( &hints, 0, sizeof ( struct addrinfo ) );
+  hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
+  hints.ai_socktype = SOCK_DGRAM; /* Datagram socket */
+  hints.ai_flags = 0;
+  hints.ai_protocol = 0;          /* Any protocol */
 
-    s = getaddrinfo(host, port, &hints, &result);
-    if (s != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
-        exit(EXIT_FAILURE);
-    }
+  s = getaddrinfo ( host, port, &hints, &result );
+
+  if ( s != 0 ) {
+    fprintf ( stderr, "getaddrinfo: %s\n", gai_strerror ( s ) );
+    exit ( EXIT_FAILURE );
+  }
 
 //      getaddrinfo() returns a list of address structures.
 //        try each address until we successfully connect(2).
 //        if socket(2) (or connect(2)) fails, we (close the socket
 //        and) try the next address.
 
-    for (rp = result; rp != NULL; rp = rp->ai_next) {
-        sfd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
-        if (sfd == -1)
-            continue;
+  for ( rp = result; rp != NULL; rp = rp->ai_next ) {
+    sfd = socket ( rp->ai_family, rp->ai_socktype, rp->ai_protocol );
 
-        if (::connect(sfd, rp->ai_addr, rp->ai_addrlen) != -1)
-            break;                   //Success
+    if ( sfd == -1 )
+      continue;
 
-        close(sfd);
-    }
-    fcntl ( sfd, F_SETFL, O_NONBLOCK );
+    if ( ::connect ( sfd, rp->ai_addr, rp->ai_addrlen ) != -1 )
+      break;                   //Success
 
-    if (rp == NULL) {                //No address succeeded
-        fprintf(stderr, "Could not connect\n");
-        exit(EXIT_FAILURE);
-    }
+    close ( sfd );
+  }
 
-    freeaddrinfo(result);            //No longer needed
-    return true;
+  fcntl ( sfd, F_SETFL, O_NONBLOCK );
+
+  if ( rp == NULL ) {              //No address succeeded
+    fprintf ( stderr, "Could not connect\n" );
+    exit ( EXIT_FAILURE );
+  }
+
+  freeaddrinfo ( result );         //No longer needed
+  return true;
 
 }
 
 void SockClient::exec()
 {
-    int s, j;
-    size_t len;
-    ssize_t nread;
+  int s, j;
 
-    for(;;)
-    {
-        std::string a_strl;
-        std::cout<<"Enter message:";
-        std::cout.flush();
-        std::getline(std::cin, a_strl);
-        std::cout<<a_strl<<"\n";
-        std::cout.flush();
+  for ( ;; ) {
+    std::string a_strl;
+    std::cout << "Enter message:";
+    std::cout.flush();
+    std::getline ( std::cin, a_strl );
+    std::cout << a_strl << "\n";
+    std::cout.flush();
 
-        if(a_strl==std::string("exit"))
-            exit(EXIT_SUCCESS);
-        else if (a_strl==std::string(""))
-        {
-            bool do_while = true;
-            do
-            {
-                nread = read(sfd, buf, BUF_SIZE);
-                if (nread == -1)
-                    do_while = false;
-                else
-                    std::cout<<"Received "<<nread<<" bytes: "<< buf<< std::endl;
-            } while( do_while );
-        }
-        else {
+    if ( a_strl == std::string ( "exit" ) )
+      exit ( EXIT_SUCCESS );
 
-            strcpy(buf, a_strl.c_str());
-            len =  strlen(buf) + 1;
-            if (write(sfd, buf, len) != len) {
-                fprintf(stderr, "partial/failed write\n");
-                exit(EXIT_FAILURE);
-            }
-        }
-    }
-    exit(EXIT_SUCCESS);
+    else
+      if ( a_strl == std::string ( "" ) )
+        receive();
+
+      else {
+        send ( a_strl );
+        receive();
+      }
+  }
+
+  exit ( EXIT_SUCCESS );
+}
+
+void SockClient::receive()
+{
+  bool do_while = true;
+
+  do {
+    ssize_t nread = read ( sfd, buf, BUF_SIZE );
+
+    if ( nread == -1 )
+      do_while = false;
+
+    else
+      std::cout << buf << std::endl;
+  } while ( do_while );
+}
+
+void SockClient::send ( const std::string & msg )
+{
+  strcpy ( buf, msg.c_str() );
+  size_t len =  strlen ( buf ) + 1;
+
+  if ( write ( sfd, buf, len ) != len ) {
+    std::cerr<< "partial/failed write" <<std::endl;
+    exit ( EXIT_FAILURE );
+  }
 }
 
 
 //     for (j = 3; j < argc; j++) {
-//         len = strlen(argv[j]) + 1; 	// +1 for terminating null byte
+//         len = strlen(argv[j]) + 1;   // +1 for terminating null byte
 //
 //         if (len + 1 > BUF_SIZE) {
 //             fprintf(stderr,
