@@ -1,6 +1,7 @@
 // Server program
 
 #include <iostream>
+#include <stdlib.h>
 
 #define BUF_SIZE 500
 
